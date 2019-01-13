@@ -11,3 +11,6 @@ leaderboards with pvptitiles
 
 ### 失敗演示
 ![load_fail_demo](https://gyazo.com/a8a5fefcb32516a82b997a9159f26a53.gif)
+
+### 槍械展示
+![gun_showcase](https://gyazo.com/6c3d6af065c09e7ec2b6cd71ede7089f.gif)
