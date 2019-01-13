@@ -48,11 +48,11 @@
         name: "Leaderboard",
         data(){
             return {
+                three_d: false,
                 rowsPerPageItems: [
                     20,50,70,
                     {"text":"All","value":-1}
                 ],
-                three_d: false,
                 last_update: '',
                 update_fail: false,
                 update_success: false,
@@ -155,8 +155,12 @@
             let cooldown = this.$store.state.cooldown;
             if (cooldown > 0) this.cooldown(cooldown);
         },
+        mounted() {
+            this.three_d = this.$store.state.avatar_3d
+        },
         beforeDestroy(){
-            this.$store.commit('setCooldown',this.countdown)
+            this.$store.commit('setCooldown', this.countdown);
+            this.$store.commit('set3D', this.three_d);
         }
     }
 </script>

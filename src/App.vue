@@ -84,15 +84,15 @@ export default {
         nav: false,
     }
   },
-  computed: {
-    isMobile(){
-        let mobile = this.$vuetify.breakpoint.mdAndDown;
-        this.$store.dispatch('updateMobile', mobile);
-        return mobile
-    }
-  },
+    computed: {
+        isMobile() {
+            let mobile = this.$vuetify.breakpoint.mdAndDown;
+            this.$store.dispatch('updateMobile', mobile);
+            return mobile
+        }
+    },
     methods: {
         toTop: () => window.scrollTo(0, 0),
-  }
+    }
 }
 </script>
