@@ -1,0 +1,78 @@
+{
+  "_comment": "hot 是 大熱, new 是 最新, 大熱 會覆蓋於 最新",
+  "types": [
+    "手槍",
+    "步槍"
+  ],
+  "guns": [
+    {
+      "gun": "USP-S",
+      "type": "手槍"
+    },
+    {
+      "gun": "AK-47",
+      "type": "步槍"
+    },
+    {
+      "gun": "GLOCK-18",
+      "type": "手槍"
+    }
+  ],
+  "contact_link": "https://www.facebook.com/Rain911105",
+  "boxes": [
+    {
+      "type": "手槍",
+      "gun": "USP-S",
+      "name": "原始造型",
+      "img_src": "https://twminestrike.weebly.com/uploads/9/9/4/2/99424264/usp-s_1.png",
+      "price": "50$ 遊戲幣",
+      "priority": 0,
+      "new": false,
+      "hot": false
+    },
+    {
+      "type": "手槍",
+      "gun": "USP-S",
+      "name": "亢奮野獸",
+      "text_color": "red",
+      "img_src": "https://twminestrike.weebly.com/uploads/9/9/4/2/99424264/usp-shyperbeast_1.png",
+      "price": "300點券",
+      "priority": 1,
+      "new": false,
+      "hot": true
+    },
+    {
+      "type": "手槍",
+      "gun": "GLOCK-18",
+      "name": "咒葉",
+      "text_color": "blue",
+      "img_src": "https://twminestrike.weebly.com/uploads/9/9/4/2/99424264/glock-18tree_orig.png",
+      "price": "Crate",
+      "priority": 5,
+      "new": true,
+      "hot": true
+    },
+    {
+      "type": "步槍",
+      "gun": "AK-47",
+      "name": "黃金",
+      "text_color": "darkgoldenrod",
+      "img_src": "https://twminestrike.weebly.com/uploads/9/9/4/2/99424264/ak47gold_1.png",
+      "price": "150貢獻值",
+      "priority": 3,
+      "new": false,
+      "hot": false
+    },
+    {
+      "type": "步槍",
+      "gun": "AK-47",
+      "name": "黑暗騎士",
+      "text_color": "purple",
+      "img_src": "https://twminestrike.weebly.com/uploads/9/9/4/2/99424264/ak47dark_1.png",
+      "price": "???",
+      "priority": 4,
+      "new": true,
+      "hot": false
+    }
+  ]
+}

@@ -1,11 +1,20 @@
 <template>
     <v-content>
+        <v-toolbar class="info darken-2 white--text">
+            <v-toolbar-title class="headline">積分排行</v-toolbar-title>
+        </v-toolbar>
         <v-card class="elevation-2">
             <v-card-title>
-                <v-btn class="success" @click="update_rank" :disabled="loading || countdown!==0" :loading="loading">{{countdown !== 0 ? '冷卻 '+countdown+'秒' : '刷新'}}</v-btn><span class="red--text">最近刷新: {{!!last_update ? last_update : ' 加載失敗'}}</span>
-                <v-switch class="pl-5" v-model="three_d" :label="'切換到 '+(three_d ? '2' : '3')+'D 頭像'"></v-switch>
+                <v-layout :class="(isMobile ? 'wrap' : '')">
+                    <v-btn :disabled="loading || countdown!==0" :loading="loading" @click="update_rank" class="success">
+                        {{countdown !== 0 ? '冷卻 '+countdown+'秒' : '刷新'}}
+                    </v-btn>
+                    <span class="subheading red--text pt-2">最近刷新: {{!!last_update ? last_update : ' 加載失敗'}}</span>
+                    <v-switch :label="'切換到 '+(three_d ? '2' : '3')+'D 頭像'" class="pl-5" v-model="three_d"></v-switch>
                 <v-spacer></v-spacer>
-                <v-text-field v-model="search" append-icon="search" label="搜索" single-line hide-details style="width:50px"></v-text-field>
+                    <v-text-field :style="!isMobile ? 'width:50px' : ''" append-icon="search" hide-details label="搜索"
+                                  single-line v-model="search"></v-text-field>
+                </v-layout>
             </v-card-title>
             <v-card-text>
         <v-data-table :loading="loading" class="elevation-1" :headers="headers" :items="rank_leader_local" :pagination.sync="pagination" :rows-per-page-items="rowsPerPageItems" rows-per-page-text="每頁記錄數："
@@ -24,16 +33,12 @@
         </v-data-table>
             </v-card-text>
         </v-card>
-        <v-dialog v-model="update_fail" max-width="500px">
-            <v-card>
-                <v-card-title class="headline grey lighten-3 red--text">更新失敗</v-card-title>
-                <v-card-text >更新失敗 請稍後再試</v-card-text>
-                <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="update_fail = false" class="error">返回</v-btn>
-                </v-card-actions>
-            </v-card>
-        </v-dialog>
+        <v-snackbar :timeout="5000" top v-model="update_success">更新成功
+            <v-btn @click="update_success = false" color="green" flat>返回</v-btn>
+        </v-snackbar>
+        <v-snackbar :timeout="5000" top v-model="update_fail">更新失敗，請稍候再嘗試
+            <v-btn @click="update_fail = false" color="red" flat>返回</v-btn>
+        </v-snackbar>
     </v-content>
 </template>
 
@@ -49,6 +54,7 @@
                 three_d: false,
                 last_update: '',
                 update_fail: false,
+                update_success: false,
                 loading: false,
                 search: '',
                 headers: [
@@ -83,7 +89,7 @@
                 this.loading = true;
                 this.$axios({
                     method: 'get',
-                    url: '//localhost:9090/list'
+                    url: '//minestrike.ddns.net:9090/list'
                 }).then(res=>{
                     this.rank_leader_local = res.data;
                     this.last_update = new Date().toLocaleTimeString();
@@ -97,13 +103,14 @@
                 this.loading = true;
                 this.$axios({
                     method: 'get',
-                    url: '//localhost:9090/refresh'
+                    url: '//minestrike.ddns.net:9090/refresh'
                 }).then(res=>{
                     if (res.data.success){
-                        this.$axios.get('//localhost:9090/list').then(res=> {
+                        this.$axios.get('//minestrike.ddns.net:9090/list').then(res => {
                             this.rank_leader_local = res.data;
                             this.last_update = new Date().toLocaleTimeString();
                             this.loading = false;
+                                this.update_success = true;
                             this.cooldown(30);
                         }
                         )

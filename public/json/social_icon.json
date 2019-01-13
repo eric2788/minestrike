@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Facebook 社團",
+    "link": "https://www.facebook.com/groups/1303328319765052",
+    "icon": "fab fa-facebook"
+  },
+  {
+    "name": "Discord",
+    "link": "https://discord.gg/yvUcevc",
+    "icon": "fab fa-discord"
+  },
+  {
+    "name": "原始碼",
+    "link": "https://github.com/eric2788/minestrike",
+    "icon": "far fa-file-code"
+  }
+]
