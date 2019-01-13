@@ -29,8 +29,8 @@
             <v-icon>menu</v-icon>
         </v-toolbar-side-icon>
         <v-toolbar-title class="pr-2">MineStrike</v-toolbar-title>
-        <template v-for="btn in buttons">
-            <v-spacer :key="btn.icon" v-if="btn.to === '/about'"></v-spacer>
+        <template v-for="(btn,i) in buttons">
+            <v-spacer :key="i" v-if="btn.to === '/about'"></v-spacer>
             <v-btn :key="btn.icon" :to="btn.to" flat v-if="!isMobile">{{btn.name}}</v-btn>
         </template>
     </v-toolbar>

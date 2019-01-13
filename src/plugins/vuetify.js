@@ -3,6 +3,6 @@ import Vuetify, {VLayout} from 'vuetify/lib'
 import 'vuetify/src/stylus/app.styl'
 
 Vue.use(Vuetify, {
-  iconfont: 'mdi' || 'md' || 'mdi' || 'fa' || 'fa4' || 'fa5',
+  iconfont: 'md' || 'fa5',
   components: {VLayout}
 })

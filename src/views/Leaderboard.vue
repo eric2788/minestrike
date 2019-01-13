@@ -10,7 +10,8 @@
                         {{countdown !== 0 ? '冷卻 '+countdown+'秒' : '刷新'}}
                     </v-btn>
                     <span class="subheading red--text pt-2">最近刷新: {{!!last_update ? last_update : ' 加載失敗'}}</span>
-                    <v-switch :label="'切換到 '+(three_d ? '2' : '3')+'D 頭像'" class="pl-5" v-model="three_d"></v-switch>
+                    <v-switch :class="{'pl-5': !isMobile}" :label="'切換到 '+(three_d ? '2' : '3')+'D 頭像'"
+                              v-model="three_d"></v-switch>
                 <v-spacer></v-spacer>
                     <v-text-field :style="!isMobile ? 'width:50px' : ''" append-icon="search" hide-details label="搜索"
                                   single-line v-model="search"></v-text-field>
@@ -77,50 +78,65 @@
             }
         },
         computed: {
-            rank_leader(){
-                return this.$store.state.rank_leader;
-            },
             isMobile(){
                 return this.$store.state.isMobile;
             }
         },
         methods: {
+            async get_rank_local() {
+                this.$axios.get("//test.hypernite.com/minestrike/php/list.php").then(res => {
+                    this.rank_leader_local = res.data;
+                    this.last_update = new Date().toLocaleTimeString();
+                    this.loading = false;
+                    return true;
+                }).catch(() => {
+                    this.update_fail = true;
+                    this.loading = false;
+                    return false;
+                });
+            },
             async get_rank(){
                 this.loading = true;
                 this.$axios({
                     method: 'get',
-                    url: '//minestrike.ddns.net:9090/list'
+                    url: '/list'
                 }).then(res=>{
                     this.rank_leader_local = res.data;
                     this.last_update = new Date().toLocaleTimeString();
                     this.loading = false;
+                    return true;
                 }).catch(()=> {
+                    return this.get_rank_local();
+                });
+            },
+            async update_rank_local() {
+                this.$axios.get('//test.hypernite.com/minestrike/php/get.php').then(res => {
+                    if (res.data.success && this.get_rank_local()) {
+                        this.update_success = true;
+                        this.cooldown(30);
+                        return true;
+                    }
+                }).catch(() => {
                     this.update_fail = true;
                     this.loading = false;
+                    return false;
                 });
             },
             async update_rank(){
                 this.loading = true;
                 this.$axios({
                     method: 'get',
-                    url: '//minestrike.ddns.net:9090/refresh'
+                    url: '/refresh'
                 }).then(res=>{
-                    if (res.data.success){
-                        this.$axios.get('//minestrike.ddns.net:9090/list').then(res => {
-                            this.rank_leader_local = res.data;
-                            this.last_update = new Date().toLocaleTimeString();
-                            this.loading = false;
-                                this.update_success = true;
-                            this.cooldown(30);
-                        }
-                        )
+                    if (res.data.success && this.get_rank()) {
+                        this.update_success = true;
+                        this.cooldown(30);
                     }else{
                         this.update_fail = true;
                         this.loading = false;
                     }
                 }).catch(()=> {
-                    this.update_fail = true;
-                    this.loading = false;
+                    this.update_rank_local()
                 });
             },
             headskin(uuid,three_d){
