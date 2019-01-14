@@ -84,7 +84,7 @@
         methods: {
             async get_ban_local(ip) {
                 let data = ip ? 'baniplist' : 'banlist';
-                this.$axios.get("//test.hypernite.com/minestrike/php/api.php?data=" + data).then(res => {
+                this.$axios.get("//minestrike.ownmc.space/php/api.php?data=" + data).then(res => {
                     this.ban_list_local = res.data;
                     this.loading = false;
                     return true;

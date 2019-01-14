@@ -3,8 +3,8 @@
         <v-card class="info darken-4 flex" raised tile>
             <v-card-title class="white--text pt-4 pb-4">
                 <template v-if="!isMobile">
-                    <h2 class="pr-2 headline">MineStrike 伺服器</h2>
-                    <span class="subheading"> - 槍械競技｜穩定更新｜競技活動｜軍火造型｜平衡遊玩</span>
+                    <h2 class="pr-2 headline">{{footertxt.title}}</h2>
+                    <span class="subheading">{{footertxt.subheading}}</span>
                 </template>
                 <v-spacer></v-spacer>
                 <!-- Not work on production mode -->
@@ -25,9 +25,9 @@
             <v-card-text class="info darken-3">
                 <v-flex text-xs-center white--text xs12>
                     &copy;2019 — MineStrike 官方網站<br v-if="isMobile"><span v-else>,</span> 網站由 <strong><a
-                        href="//github.com/eric2788"
-                        style="color:white">Eric
+                        href="//github.com/eric2788">Eric
                     Lam</a></strong> 創建, 版權所有。
+                    <v-btn class="success mt-0 mb-0" href="//www.ownmc.space" small>網站製作委託</v-btn>
                 </v-flex>
             </v-card-text>
         </v-card>
@@ -36,12 +36,13 @@
 
 <script>
     import social from '../../public/json/social_icon'
-
+    import footerText from '../../public/json/footer'
     export default {
         name: "Footer",
         data() {
             return {
-                links: social
+                links: social,
+                footertxt: footerText
             }
         },
         computed: {
@@ -53,5 +54,8 @@
 </script>
 
 <style scoped>
-
+    a, a:hover, a:active {
+        color: white;
+        text-decoration: none;
+    }
 </style>

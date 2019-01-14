@@ -25,6 +25,7 @@
                               no-results-text="沒有找到匹配記錄" no-data-text="無可用數據" :search="search">
             <v-progress-linear height="4px" slot="progress" color="black" indeterminate></v-progress-linear>
             <template  slot="items" slot-scope="props">
+                <td>#{{props.index+1+((pagination.page-1)*pagination.rowsPerPage)}}</td>
                 <td style="padding: 10px"><v-img alt="Loading..." :src="headskin(props.item.uuid,three_d)" width="50px"></v-img></td>
                 <td>{{ props.item.player_name }}</td>
                 <td>{{ props.item.rank }}</td>
@@ -51,6 +52,7 @@
         name: "Leaderboard",
         data(){
             return {
+                lead: 1,
                 three_d: false,
                 rowsPerPageItems: [
                     20,50,70,
@@ -62,6 +64,7 @@
                 loading: false,
                 search: '',
                 headers: [
+                    {text: '名次', sortable: false},
                     {sortable: false},
                     {text: '玩家名稱', value: 'player_name'},
                     {text: '所屬牌位',value: 'fame'},
@@ -87,7 +90,7 @@
         },
         methods: {
             async get_rank_local() {
-                this.$axios.get("//test.hypernite.com/minestrike/php/api.php?data=list").then(res => {
+                this.$axios.get("//minestrike.ownmc.space/php/api.php?data=list").then(res => {
                     this.rank_leader_local = res.data;
                     this.last_update = new Date().toLocaleTimeString();
                     this.loading = false;
@@ -113,7 +116,7 @@
                 });
             },
             async update_rank_local() {
-                this.$axios.get('//test.hypernite.com/minestrike/php/api.php?data=refresh').then(res => {
+                this.$axios.get('//minestrike.ownmc.space/php/api.php?data=refresh').then(res => {
                     if (res.data.success && this.get_rank_local()) {
                         this.update_success = true;
                         this.cooldown(30);

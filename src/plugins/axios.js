@@ -6,7 +6,6 @@ import axios from "axios";
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 axios.defaults.headers.get['Content-Type'] = 'application/json';
-
 let config = {
   baseURL: "//minestrike.ddns.net:9090",
   timeout: 10 * 1000, // Timeout
