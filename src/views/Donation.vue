@@ -16,7 +16,10 @@
     export default {
         name: "Donation",
         data() {
-            return {donation: donation}
+            return {donation: []}
+        },
+        beforeCreate() {
+            fetch('./json/donation.json').then(r => r.json()).then(res => this.donation = res).catch(() => this.donation = donation);
         }
     }
 </script>

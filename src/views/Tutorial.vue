@@ -17,7 +17,7 @@
         name: "Tutorial",
         data() {
             return {
-                tutorial: tutorial,
+                tutorial: [],
             }
         },
         computed: {
@@ -30,6 +30,9 @@
                 return this.$store.state.tutorial
             }
         },
+        beforeCreate() {
+            fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = res).catch(() => this.tutorial = tutorial);
+        }
     }
 </script>
 

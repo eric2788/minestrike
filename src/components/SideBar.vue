@@ -27,7 +27,7 @@
         name: "SideBar",
         data() {
             return {
-                sidebar: sidebar
+                sidebar: []
             }
         },
         mounted: () => {
@@ -39,6 +39,9 @@
                 js.src = 'https://connect.facebook.net/zh_HK/sdk.js#xfbml=1&version=v2.12&appId=1193358790711987&autoLogAppEvents=1';
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
+        },
+        beforeCreate() {
+            fetch('./json/sidebar.json').then(r => r.json()).then(res => this.sidebar = res).catch(() => this.sidebar = sidebar);
         }
     }
 </script>

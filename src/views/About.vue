@@ -44,13 +44,16 @@
             return {
                 search: '',
                 pagination: {rowsPerPage: -1},
-                staffs: Staffs
+                staffs: []
             }
         },
         computed: {
             isMobile() {
                 return this.$store.state.isMobile
             }
+        },
+        beforeCreate() {
+            fetch('./json/staff.json').then(r => r.json()).then(res => this.staffs = res).catch(() => this.staffs = Staffs);
         }
     }
 </script>

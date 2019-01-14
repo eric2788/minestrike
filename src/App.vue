@@ -84,6 +84,7 @@
     import Sidebar from './components/SideBar'
     import Footer from './components/Footer'
     import tutorials from '../public/json/tutorials'
+
 export default {
   name: 'App',
   components: {
@@ -91,7 +92,7 @@ export default {
   },
   data () {
     return {
-        tutorial: tutorials,
+        tutorial: [],
         buttons: [
             {
                 name: '首頁',
@@ -140,7 +141,7 @@ export default {
         },
         tutorial_type() {
             let result = [];
-            Array.from(this.tutorial).forEach(item => result.push(item.name))
+            Array.from(this.tutorial).forEach(item => result.push(item.name));
             return result;
         }
     },
@@ -149,6 +150,9 @@ export default {
     },
     created() {
         this.$store.commit('setTutType', this.tutorial[0].name)
+    },
+    beforeCreate() {
+        fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = res).catch(() => this.tutorial = tutorials);
     }
 }
 </script>

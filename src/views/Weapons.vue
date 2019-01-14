@@ -61,7 +61,7 @@
                 selected_type: '所有',
                 selected_guns: '所有',
                 search: '',
-                weapons: weapons,
+                weapons: [],
                 rowsPerPageItems: [6, 12, 24, {text: "All", value: -1}],
                 pagination: {
                     rowsPerPage: 24,
@@ -98,6 +98,9 @@
         },
         mounted() {
             this.pagination.rowsPerPage = this.isMobile ? 6 : 24
+        },
+        beforeCreate() {
+            fetch('./json/weapons.json').then(r => r.json()).then(res => this.weapons = res).catch(() => this.weapons = weapons);
         }
     }
 </script>

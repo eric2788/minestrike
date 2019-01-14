@@ -41,14 +41,18 @@
         name: "Footer",
         data() {
             return {
-                links: social,
-                footertxt: footerText
+                links: [],
+                footertxt: {}
             }
         },
         computed: {
             isMobile() {
                 return this.$store.state.isMobile
             }
+        },
+        beforeCreate() {
+            fetch('./json/social_icon.json').then(r => r.json()).then(res => this.links = res).catch(() => this.links = social);
+            fetch('./json/footer.json').then(r => r.json()).then(res => this.footertxt = res).catch(() => this.links = footerText);
         }
     }
 </script>
