@@ -27,7 +27,7 @@
                               no-data-text="無可用數據" no-results-text="沒有找到匹配記錄" rows-per-page-text="每頁記錄數：">
                     <v-progress-linear color="black" height="4px" indeterminate slot="progress"></v-progress-linear>
                     <template slot="items" slot-scope="props">
-                        <td>{{ props.item.target }}</td>
+                        <td>{{ props.item.using_name ? props.item.target : hideIP(props.item.target) }}</td>
                         <td>{{ props.item.reason }}</td>
                         <td>{{ props.item.source }}</td>
                         <td>{{ props.item.created.toLocaleDateString() }}</td>
@@ -60,7 +60,7 @@
                 loading: false,
                 search: '',
                 headers: [
-                    {text: (this.ip ? 'IP地址' : '玩家名稱'), value: 'target'},
+                    {text: '玩家名稱 / IP', value: 'target'},
                     {text: '封禁原因', value: 'reason', sortable: false},
                     {text: '操作者', value: 'source'},
                     {text: '封禁日期', value: 'created'},
@@ -107,6 +107,11 @@
                     return this.get_ban_local();
                 });
             },
+            hideIP(ip) {
+                let ipnodes = ip.toString().split(".");
+                ipnodes[3] = ipnodes[2] = '*';
+                return ipnodes.join(".")
+            }
         },
         created() {
             this.ip = this.$store.state.ban_ip;
