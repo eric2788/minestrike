@@ -53,7 +53,8 @@
         <template v-for="(btn,i) in buttons">
             <v-spacer :key="i" v-if="btn.to === '/about'"></v-spacer>
             <v-btn :key="btn.icon" :to="btn.to" flat v-if="!isMobile && btn.to !== '/tutorials'">{{btn.name}}</v-btn>
-            <v-menu :key="i+'menu'" offset-y v-else-if="!isMobile">
+            <v-menu :key="i+'menu'" open-on-hover origin="center center" transition="slide-y-transition"
+                    v-else-if="!isMobile">
                 <v-btn flat slot="activator">{{btn.name}}</v-btn>
                 <v-list>
                     <v-list-tile :key="i" :to="btn.to" @click="$store.commit('setTutType',item)"
