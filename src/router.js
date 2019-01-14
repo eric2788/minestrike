@@ -5,7 +5,7 @@ Vue.use(Router);
 
 export default new Router({
   mode: 'history',
-  base: '/minestrike/',
+  base: '/',
   routes: [
     {
       path: '/',
@@ -26,6 +26,26 @@ export default new Router({
       path: '/about',
       name: 'About',
       component: () => import('./views/About.vue')
-    }
+    },
+    {
+      path: '/banlist',
+      name: 'BanList',
+      component: () => import('./views/BanRecords.vue')
+    },
+    {
+      path: '/donate',
+      name: 'Donation',
+      component: () => import('./views/Donation.vue')
+    },
+    {
+      path: '/tutorials',
+      name: 'Tutorials',
+      component: () => import('./views/Tutorial.vue')
+    },
+    {
+      path: '*',
+      name: 'NotFound',
+      component: () => import('./views/NotFound.vue')
+    },
   ]
 })

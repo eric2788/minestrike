@@ -6,10 +6,11 @@
         <v-card class="elevation-2">
             <v-card-title>
                 <v-layout :class="(isMobile ? 'wrap' : '')">
-                    <v-btn :disabled="loading || countdown!==0" :loading="loading" @click="update_rank" class="success">
+                    <v-btn :disabled="loading || countdown!==0" :loading="loading" @click="update_rank"
+                           class="success mt-3">
                         {{countdown !== 0 ? '冷卻 '+countdown+'秒' : '刷新'}}
                     </v-btn>
-                    <span class="subheading red--text pt-2">最近刷新: {{!!last_update ? last_update : ' 加載失敗'}}</span>
+                    <span class="subheading red--text pt-2 mt-3">最近刷新: {{!!last_update ? last_update : ' 加載失敗'}}</span>
                     <v-switch :class="{'pl-5': !isMobile}" :label="'切換到 '+(three_d ? '2' : '3')+'D 頭像'"
                               v-model="three_d"></v-switch>
                 <v-spacer></v-spacer>
@@ -18,8 +19,10 @@
                 </v-layout>
             </v-card-title>
             <v-card-text>
-        <v-data-table :loading="loading" class="elevation-1" :headers="headers" :items="rank_leader_local" :pagination.sync="pagination" :rows-per-page-items="rowsPerPageItems" rows-per-page-text="每頁記錄數："
-                      no-results-text="沒有找到匹配記錄" no-data-text="無可用數據" :search="search">
+                <v-data-table :headers="headers" :items="Array.from(rank_leader_local)" :loading="loading"
+                              :pagination.sync="pagination" :rows-per-page-items="rowsPerPageItems" class="elevation-1"
+                              rows-per-page-text="每頁記錄數："
+                              no-results-text="沒有找到匹配記錄" no-data-text="無可用數據" :search="search">
             <v-progress-linear height="4px" slot="progress" color="black" indeterminate></v-progress-linear>
             <template  slot="items" slot-scope="props">
                 <td style="padding: 10px"><v-img alt="Loading..." :src="headskin(props.item.uuid,three_d)" width="50px"></v-img></td>
@@ -84,7 +87,7 @@
         },
         methods: {
             async get_rank_local() {
-                this.$axios.get("//test.hypernite.com/minestrike/php/list.php").then(res => {
+                this.$axios.get("//test.hypernite.com/minestrike/php/api.php?data=list").then(res => {
                     this.rank_leader_local = res.data;
                     this.last_update = new Date().toLocaleTimeString();
                     this.loading = false;
@@ -110,7 +113,7 @@
                 });
             },
             async update_rank_local() {
-                this.$axios.get('//test.hypernite.com/minestrike/php/get.php').then(res => {
+                this.$axios.get('//test.hypernite.com/minestrike/php/api.php?data=refresh').then(res => {
                     if (res.data.success && this.get_rank_local()) {
                         this.update_success = true;
                         this.cooldown(30);

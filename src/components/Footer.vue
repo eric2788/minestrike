@@ -24,8 +24,9 @@
             <v-divider></v-divider>
             <v-card-text class="info darken-3">
                 <v-flex text-xs-center white--text xs12>
-                    &copy;2019 — MineStrike 官方網站, <br v-if="isMobile"> 網站由 <strong><a href="//github.com/eric2788"
-                                                                                      style="color:white">Eric
+                    &copy;2019 — MineStrike 官方網站<br v-if="isMobile"><span v-else>,</span> 網站由 <strong><a
+                        href="//github.com/eric2788"
+                        style="color:white">Eric
                     Lam</a></strong> 創建, 版權所有。
                 </v-flex>
             </v-card-text>

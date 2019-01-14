@@ -7,7 +7,9 @@ export default new Vuex.Store({
   state: {
     isMobile: false,
     cooldown: 0,
-    avatar_3d: false
+      avatar_3d: false,
+      ban_ip: false,
+      tutorial: '',
   },
   mutations: {
     updateMobile(state, boolean){
@@ -18,7 +20,13 @@ export default new Vuex.Store({
     },
     set3D(state, boolean) {
       state.avatar_3d = boolean
-    }
+    },
+      setIP(state, isIP) {
+          state.ban_ip = isIP
+      },
+      setTutType(state, type) {
+          state.tutorial = type
+      }
   },
   actions: {
     updateMobile({commit},mobile){

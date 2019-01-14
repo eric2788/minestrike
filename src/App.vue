@@ -31,8 +31,18 @@
         <v-toolbar-title class="pr-2">MineStrike</v-toolbar-title>
         <template v-for="(btn,i) in buttons">
             <v-spacer :key="i" v-if="btn.to === '/about'"></v-spacer>
-            <v-btn :key="btn.icon" :to="btn.to" flat v-if="!isMobile">{{btn.name}}</v-btn>
+            <v-btn :key="btn.icon" :to="btn.to" flat v-if="!isMobile && btn.to !== '/tutorials'">{{btn.name}}</v-btn>
+            <v-menu :key="i+'menu'" offset-y v-else-if="!isMobile">
+                <v-btn flat slot="activator">{{btn.name}}</v-btn>
+                <v-list :to="btn.to">
+                    <v-list-tile :key="i" @click="()=> {$store.commit('setTutType',item)}"
+                                 v-for="(item,i) in tutorial_type">
+                        <v-list-tile-title>{{item}}</v-list-tile-title>
+                    </v-list-tile>
+                </v-list>
+            </v-menu>
         </template>
+
     </v-toolbar>
     <v-container>
         <v-layout :class="isMobile ? 'column' : 'row'">
@@ -51,7 +61,7 @@
 <script>
     import Sidebar from './components/SideBar'
     import Footer from './components/Footer'
-
+    import tutorials from '../public/json/tutorials'
 export default {
   name: 'App',
   components: {
@@ -59,6 +69,7 @@ export default {
   },
   data () {
     return {
+        tutorial: tutorials,
         buttons: [
             {
                 name: '首頁',
@@ -72,14 +83,29 @@ export default {
             },
             {
                 name: '造型展示',
-                icon: 'attach_money',
+                icon: 'extension',
                 to: '/weapons'
+            },
+            {
+                name: '封禁列表',
+                icon: 'gavel',
+                to: '/banlist'
+            },
+            {
+                name: '贊助我們',
+                icon: '',
+                to: '/donate'
+            },
+            {
+                name: '教學幫助',
+                icon: 'contact_support',
+                to: '/tutorials'
             },
             {
                 name: '關於我們',
                 icon: 'account_box',
                 to: '/about'
-            }
+            },
         ],
         nav: false,
     }
@@ -89,10 +115,18 @@ export default {
             let mobile = this.$vuetify.breakpoint.mdAndDown;
             this.$store.dispatch('updateMobile', mobile);
             return mobile
+        },
+        tutorial_type() {
+            let result = [];
+            Array.from(this.tutorial).forEach(item => result.push(item.name))
+            return result;
         }
     },
     methods: {
         toTop: () => window.scrollTo(0, 0),
+    },
+    created() {
+        this.$store.commit('setTutType', this.tutorial[0].name)
     }
 }
 </script>

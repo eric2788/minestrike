@@ -5,13 +5,12 @@ import axios from "axios";
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-// axios.defaults.headers.common['Authorization'] = AUTH_TOKEN;
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+axios.defaults.headers.get['Content-Type'] = 'application/json';
 
 let config = {
   baseURL: "//minestrike.ddns.net:9090",
-    timeout: 10 * 1000, // Timeout
-  // withCredentials: true, // Check cross-site Access-Control
+  timeout: 10 * 1000, // Timeout
+  withCredentials: false, // Check cross-site Access-Control
 };
 
 const _axios = axios.create(config);
