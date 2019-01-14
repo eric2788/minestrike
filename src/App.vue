@@ -25,7 +25,6 @@
                       <v-list-group
                               :key="index+'gp'"
                               prepend-icon="contact_support"
-                              value="true"
                       >
 
                           <v-list-tile slot="activator">
