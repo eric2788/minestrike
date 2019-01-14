@@ -63,12 +63,12 @@
                     {text: '玩家名稱 / IP', value: 'target'},
                     {text: '封禁原因', value: 'reason', sortable: false},
                     {text: '操作者', value: 'source'},
-                    {text: '封禁日期', value: 'create'},
-                    {text: '解封日期', value: 'expire'},
+                    {text: '封禁日期', value: 'created_timestamp'},
+                    {text: '解封日期', value: 'expire_timestamp'},
                     {text: '封禁中', value: 'active', sortable: false},
                 ],
                 pagination: {
-                    sortBy: "create",
+                    sortBy: "created_timestamp",
                     descending: true,
                     rowsPerPage: 20
                 },
