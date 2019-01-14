@@ -36,24 +36,21 @@
 </template>
 
 <script>
-    import Staffs from '../../public/json/staff'
-
     export default {
         name: "About",
         data() {
             return {
                 search: '',
                 pagination: {rowsPerPage: -1},
-                staffs: []
             }
         },
         computed: {
             isMobile() {
                 return this.$store.state.isMobile
+            },
+            staffs() {
+                return this.$store.state.staff_json
             }
-        },
-        beforeCreate() {
-            fetch('./json/staff.json').then(r => r.json()).then(res => this.staffs = res).catch(() => this.staffs = Staffs);
         }
     }
 </script>

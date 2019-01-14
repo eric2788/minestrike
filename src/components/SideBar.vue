@@ -21,15 +21,9 @@
 </template>
 
 <script>
-    import sidebar from '../../public/json/sidebar'
 
     export default {
         name: "SideBar",
-        data() {
-            return {
-                sidebar: []
-            }
-        },
         mounted: () => {
             (function (d, s, id) {
                 var js, fjs = d.getElementsByTagName(s)[0];
@@ -40,8 +34,10 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         },
-        beforeCreate() {
-            fetch('./json/sidebar.json').then(r => r.json()).then(res => this.sidebar = res).catch(() => this.sidebar = sidebar);
+        computed: {
+            sidebar() {
+                return this.$store.state.sidebar_json
+            }
         }
     }
 </script>

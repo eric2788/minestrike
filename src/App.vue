@@ -92,7 +92,6 @@ export default {
   },
   data () {
     return {
-        tutorial: tutorials,
         buttons: [
             {
                 name: '首頁',
@@ -134,6 +133,9 @@ export default {
     }
   },
     computed: {
+        tutorial() {
+            return this.$store.state.tutorial_json
+        },
         isMobile() {
             let mobile = this.$vuetify.breakpoint.mdAndDown;
             this.$store.dispatch('updateMobile', mobile);
@@ -148,11 +150,68 @@ export default {
     methods: {
         toTop: () => window.scrollTo(0, 0),
     },
-    created() {
-        this.$store.commit('setTutType', this.tutorial[0].name)
-    },
     beforeCreate() {
-        fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = Array.from(res)).catch(() => this.tutorial = tutorials);
+        const tutorial_json = () => import('../public/json/tutorials.json');
+        const weapons_json = () => import('../public/json/weapons.json');
+        const staff_json = () => import('../public/json/staff.json');
+        const social_json = () => import('../public/json/social_icon.json');
+        const sidebar_json = () => import('../public/json/sidebar.json');
+        const home_json = () => import('../public/json/home.json');
+        const footer_json = () => import('../public/json/footer.json');
+        const donation_json = () => import('../public/json/donation.json');
+
+
+        /*const jsons = {
+            tutorial: "tutorials",
+            weapons: "weapons",
+            home: "home",
+            donation: "donation",
+            staff: "staff",
+            sidebar: "sidebar",
+            social: "social_icon",
+            footer: "footer"
+        };
+
+        const getJSON = (json)=>{
+            fetch('./json/'+json+'.json').then(r => r.json()).then(data => {
+                return data;
+            }).catch(() => {
+                return import('../public/json/'+json+'.json');
+            });
+        };
+
+        let tutorial = getJSON(jsons.tutorial);
+        let weapons = getJSON(jsons.weapons);
+        let home = getJSON(jsons.home);
+        let donation = getJSON(jsons.donation);
+        let staff = getJSON(jsons.staff);
+        let sidebar = getJSON(jsons.sidebar);
+        let footer = getJSON(jsons.footer);
+        let social = getJSON(jsons.social);
+
+        this.$store.commit('setJSON', {tutorial,weapons,home,donation,staff,sidebar,footer,social});*/ // Totally Not Working
+
+
+        fetch('./json/tutorials.json').then(r => r.json()).then(res => {
+            this.$store.commit('setTutorial', res);
+            this.$store.commit('setTutType', res[0].name);
+        }).catch(() => this.$store.commit('setTutorial', tutorial_json()));
+
+        fetch('./json/weapons.json').then(r => r.json()).then(res => this.$store.commit('setWeapons', res)).catch(() => this.$store.commit('setWeapons', weapons_json()));
+
+        fetch('./json/home.json').then(r => r.json()).then(res => this.$store.commit('setHome', res)).catch(() => this.$store.commit('setHome', home_json()));
+
+        fetch('./json/donation.json').then(r => r.json()).then(res => this.$store.commit('setDonation', res)).catch(() => this.$store.commit('setDonation', donation_json()));
+
+        fetch('./json/staff.json').then(r => r.json()).then(res => this.$store.commit('setStaff', res)).catch(() => this.$store.commit('setStaff', staff_json()));
+
+        fetch('./json/sidebar.json').then(r => r.json()).then(res => this.$store.commit('setSideBar', res)).catch(() => this.$store.commit('setSideBar', sidebar_json()));
+
+        fetch('./json/social_icon.json').then(r => r.json()).then(res => this.$store.commit('setSocial', res)).catch(() => this.$store.commit('setSocial', social_json()));
+
+        fetch('./json/footer.json').then(r => r.json()).then(res => this.$store.commit('setFooter', res)).catch(() => this.$store.commit('setFooter', footer_json()));
+
+
     }
 }
 </script>

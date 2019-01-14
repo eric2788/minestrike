@@ -10,16 +10,12 @@
   </v-content>
 </template>
 <script>
-  import home from '../../public/json/home'
   export default {
     name: 'Home',
-    data() {
-      return {
-        home: []
+    computed: {
+      home() {
+        return this.$store.state.home_json
       }
-    },
-    beforeCreate() {
-      fetch('./json/home.json').then(r => r.json()).then(res => this.home = res).catch(() => this.home = home)
     }
   }
 </script>

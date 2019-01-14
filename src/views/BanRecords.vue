@@ -30,7 +30,7 @@
                         <td>{{ props.item.using_name ? props.item.target : hideIP(props.item.target) }}</td>
                         <td>{{ props.item.reason }}</td>
                         <td>{{ props.item.source }}</td>
-                        <td>{{ props.item.created.toLocaleDateString() }}</td>
+                        <td>{{ props.item.create.toLocaleDateString() }}</td>
                         <td>{{ props.item.expire.toLocaleDateString() }}</td>
                         <td>{{ props.item.active ? '是' : '否' }}</td>
                     </template>
@@ -63,12 +63,12 @@
                     {text: '玩家名稱 / IP', value: 'target'},
                     {text: '封禁原因', value: 'reason', sortable: false},
                     {text: '操作者', value: 'source'},
-                    {text: '封禁日期', value: 'created'},
+                    {text: '封禁日期', value: 'create'},
                     {text: '解封日期', value: 'expire'},
                     {text: '封禁中', value: 'active', sortable: false},
                 ],
                 pagination: {
-                    sortBy: "created",
+                    sortBy: "create",
                     descending: true,
                     rowsPerPage: 20
                 },

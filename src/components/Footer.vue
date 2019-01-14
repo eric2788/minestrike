@@ -35,24 +35,18 @@
 </template>
 
 <script>
-    import social from '../../public/json/social_icon'
-    import footerText from '../../public/json/footer'
     export default {
         name: "Footer",
-        data() {
-            return {
-                links: [],
-                footertxt: {}
-            }
-        },
         computed: {
             isMobile() {
                 return this.$store.state.isMobile
+            },
+            links() {
+                return this.$store.state.social_json
+            },
+            footertxt() {
+                return this.$store.state.footer_json
             }
-        },
-        beforeCreate() {
-            fetch('./json/social_icon.json').then(r => r.json()).then(res => this.links = res).catch(() => this.links = social);
-            fetch('./json/footer.json').then(r => r.json()).then(res => this.footertxt = res).catch(() => this.links = footerText);
         }
     }
 </script>

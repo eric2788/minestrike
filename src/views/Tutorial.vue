@@ -11,28 +11,24 @@
 </template>
 
 <script>
-    import tutorial from '../../public/json/tutorials'
-
     export default {
         name: "Tutorial",
         data() {
             return {
-                tutorial: tutorial,
+                tutorial: [],
             }
         },
         computed: {
-            content() {
-                let result = [];
-                result = Array.from(this.tutorial).find(item => item.name === this.type);
-                return result.content;
-            },
             type() {
                 return this.$store.state.tutorial
+            },
+            content() {
+                let tutorial = this.$store.state.tutorial_json;
+                let result = [];
+                result = tutorial.find(item => item.name === this.type);
+                return result.content;
             }
         },
-        beforeCreate() {
-            fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = Array.from(res)).catch(() => this.tutorial = tutorial);
-        }
     }
 </script>
 

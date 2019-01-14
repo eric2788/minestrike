@@ -11,15 +11,13 @@
 </template>
 
 <script>
-    import donation from '../../public/json/donation'
 
     export default {
         name: "Donation",
-        data() {
-            return {donation: []}
-        },
-        beforeCreate() {
-            fetch('./json/donation.json').then(r => r.json()).then(res => this.donation = res).catch(() => this.donation = donation);
+        computed: {
+            donation() {
+                return this.$store.state.donation_json
+            }
         }
     }
 </script>

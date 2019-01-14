@@ -52,7 +52,6 @@
 </template>
 
 <script>
-    import weapons from '../../public/json/weapons'
 
     export default {
         name: "Weapons",
@@ -61,7 +60,6 @@
                 selected_type: '所有',
                 selected_guns: '所有',
                 search: '',
-                weapons: [],
                 rowsPerPageItems: [6, 12, 24, {text: "All", value: -1}],
                 pagination: {
                     rowsPerPage: 24,
@@ -71,6 +69,9 @@
             }
         },
         computed: {
+            weapons() {
+                return this.$store.state.weapons_json
+            },
             isMobile() {
                 return this.$store.state.isMobile;
             },
@@ -98,9 +99,6 @@
         },
         mounted() {
             this.pagination.rowsPerPage = this.isMobile ? 6 : 24
-        },
-        beforeCreate() {
-            fetch('./json/weapons.json').then(r => r.json()).then(res => this.weapons = res).catch(() => this.weapons = weapons);
         }
     }
 </script>
