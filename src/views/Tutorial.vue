@@ -17,7 +17,7 @@
         name: "Tutorial",
         data() {
             return {
-                tutorial: [],
+                tutorial: tutorial,
             }
         },
         computed: {
@@ -31,7 +31,7 @@
             }
         },
         beforeCreate() {
-            fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = res).catch(() => this.tutorial = tutorial);
+            fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = Array.from(res)).catch(() => this.tutorial = tutorial);
         }
     }
 </script>

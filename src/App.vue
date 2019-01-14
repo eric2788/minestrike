@@ -92,7 +92,7 @@ export default {
   },
   data () {
     return {
-        tutorial: [],
+        tutorial: tutorials,
         buttons: [
             {
                 name: '首頁',
@@ -152,7 +152,7 @@ export default {
         this.$store.commit('setTutType', this.tutorial[0].name)
     },
     beforeCreate() {
-        fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = res).catch(() => this.tutorial = tutorials);
+        fetch('./json/tutorials.json').then(r => r.json()).then(res => this.tutorial = Array.from(res)).catch(() => this.tutorial = tutorials);
     }
 }
 </script>
