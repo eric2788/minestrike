@@ -114,11 +114,6 @@ export default {
                 to: '/banlist'
             },
             {
-                name: '贊助我們',
-                icon: '',
-                to: '/donate'
-            },
-            {
                 name: '教學幫助',
                 icon: 'contact_support',
                 to: '/tutorials'
@@ -127,6 +122,11 @@ export default {
                 name: '關於我們',
                 icon: 'account_box',
                 to: '/about'
+            },
+            {
+                name: '贊助我們',
+                icon: '',
+                to: '/donate'
             },
         ],
         nav: false,
