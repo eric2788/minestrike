@@ -13,7 +13,7 @@
           <v-divider></v-divider>
           <v-list dense>
               <template v-for="(button,index) in buttons">
-                  <v-list-tile :key="index" :to="button.to" @click.native="toTop()">
+                  <v-list-tile :key="index" :to="button.to" @click.native="toTop()" v-if="button.to !== '/tutorials'">
                       <v-list-tile-action>
                           <v-icon>{{button.icon}}</v-icon>
                       </v-list-tile-action>
@@ -21,6 +21,28 @@
                           <v-list-tile-title>{{button.name}}</v-list-tile-title>
                       </v-list-tile-content>
                   </v-list-tile>
+                  <template v-else>
+                      <v-list-group
+                              :key="index+'gp'"
+                              prepend-icon="account_circle"
+                              value="true"
+                      >
+
+                          <v-list-tile slot="activator">
+                              <v-list-tile-title>Users</v-list-tile-title>
+                          </v-list-tile>
+
+                          <v-list-tile :key="i" @click="()=> {$store.commit('setTutType',item); nav = false}"
+                                       to="/tutorials" v-for="(item,i) in tutorial_type">
+                              <v-list-tile-action>
+                              </v-list-tile-action>
+                              <v-list-tile-content>
+                                  <v-list-tile-title><span class="black--text">{{item}}</span></v-list-tile-title>
+                              </v-list-tile-content>
+
+                          </v-list-tile>
+                      </v-list-group>
+                  </template>
               </template>
           </v-list>
       </v-navigation-drawer>
@@ -34,10 +56,10 @@
             <v-btn :key="btn.icon" :to="btn.to" flat v-if="!isMobile && btn.to !== '/tutorials'">{{btn.name}}</v-btn>
             <v-menu :key="i+'menu'" offset-y v-else-if="!isMobile">
                 <v-btn flat slot="activator">{{btn.name}}</v-btn>
-                <v-list :to="btn.to">
-                    <v-list-tile :key="i" @click="()=> {$store.commit('setTutType',item)}"
+                <v-list>
+                    <v-list-tile :key="i" :to="btn.to" @click="$store.commit('setTutType',item)"
                                  v-for="(item,i) in tutorial_type">
-                        <v-list-tile-title>{{item}}</v-list-tile-title>
+                        <v-list-tile-title><span class="black--text">{{item}}</span></v-list-tile-title>
                     </v-list-tile>
                 </v-list>
             </v-menu>
