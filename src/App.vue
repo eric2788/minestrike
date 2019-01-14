@@ -24,12 +24,12 @@
                   <template v-else>
                       <v-list-group
                               :key="index+'gp'"
-                              prepend-icon="account_circle"
+                              prepend-icon="contact_support"
                               value="true"
                       >
 
                           <v-list-tile slot="activator">
-                              <v-list-tile-title>Users</v-list-tile-title>
+                              <v-list-tile-title>教學幫助</v-list-tile-title>
                           </v-list-tile>
 
                           <v-list-tile :key="i" @click="()=> {$store.commit('setTutType',item); nav = false}"
@@ -125,7 +125,7 @@ export default {
             },
             {
                 name: '贊助我們',
-                icon: '',
+                icon: 'attach_money',
                 to: '/donate'
             },
         ],
