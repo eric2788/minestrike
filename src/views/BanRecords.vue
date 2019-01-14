@@ -30,8 +30,8 @@
                         <td>{{ props.item.using_name ? props.item.target : hideIP(props.item.target) }}</td>
                         <td>{{ props.item.reason }}</td>
                         <td>{{ props.item.source }}</td>
-                        <td>{{ props.item.create.toLocaleDateString() }}</td>
-                        <td>{{ props.item.expire.toLocaleDateString() }}</td>
+                        <td>{{ props.item.create }}</td>
+                        <td>{{ props.item.expire }}</td>
                         <td>{{ props.item.active ? '是' : '否' }}</td>
                     </template>
                 </v-data-table>
