@@ -14,7 +14,7 @@
                                      :pagination.sync="pagination" :search="search" content-tag="v-layout"
                                      hide-actions no-data-text="無" no-results-text="沒有找到匹配人物">
                         <template slot="item" slot-scope="props">
-                            <v-flex class="xs2">
+                            <v-flex xs2>
                                 <v-card :class="{'mt-3': isMobile}">
                                     <div style="padding: 10px">
                                         <v-img :src="'https://crafatar.com/renders/body/'+props.item.uuid"
@@ -22,7 +22,7 @@
                                     </div>
                                     <v-card-title class="headline grey lighten-3 justify-center">{{props.item.name}}
                                     </v-card-title>
-                                    <v-card-text class="subheading">職位:
+                                    <v-card-text class="subheading text-xs-center">
                                         <v-chip>{{props.item.position}}</v-chip>
                                     </v-card-text>
                                 </v-card>

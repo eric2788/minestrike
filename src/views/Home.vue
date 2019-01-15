@@ -1,20 +1,53 @@
 <template>
   <v-content>
     <v-container pa-0>
-      <v-card :class="i!==0 ? 'mt-3' : ''" :key="i" v-for="(h,i) in home">
-        <v-card-title class="headline info darken-2 white--text">{{h.title}}</v-card-title>
-        <v-divider></v-divider>
-        <v-card-text v-html="h.html_content"></v-card-text>
-      </v-card>
+      <v-data-iterator :custom-filter="searchTitle" :items="home"
+                       :pagination.sync="pagination"
+                       :rows-per-page-items="rowsPerPageItems" :search="search"
+                       content-tag="div" no-data-text="沒有文章" no-results-text="找不到此文章"
+                       rows-per-page-text="每頁文章數：">
+        <template slot="item" slot-scope="props">
+          <v-card :class="props.index!==0 ? 'mt-3' : ''">
+            <v-card-title class="headline info darken-2 white--text">{{props.item.title}}</v-card-title>
+            <v-divider></v-divider>
+            <v-card-text v-html="props.item.html_content"></v-card-text>
+          </v-card>
+        </template>
+        <v-toolbar class="pt-4 white transparent" flat slot="footer">
+          <v-text-field :style="!isMobile ? 'padding-left: 70%' : ''" append-icon="search" label="搜索文章標題"
+                        v-model="search"></v-text-field>
+        </v-toolbar>
+      </v-data-iterator>
     </v-container>
   </v-content>
 </template>
 <script>
   export default {
     name: 'Home',
+    data() {
+      return {
+        search: '',
+        rowsPerPageItems: [3, 5, 10, {text: "All", value: -1}],
+        pagination: {
+          rowsPerPage: 3,
+          descending: true,
+          sortBy: "index"
+        }
+      }
+    },
     computed: {
       home() {
-        return this.$store.state.home_json
+        return this.$store.state.home_json;
+      },
+      isMobile() {
+        return this.$store.state.isMobile;
+      }
+    },
+    methods: {
+      searchTitle(item, search) {
+        let result = item;
+        if (search.length > 0) result = item.filter(item => item.title.match(search));
+        return result;
       }
     }
   }

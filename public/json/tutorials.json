@@ -35,6 +35,10 @@
       {
         "title": "title",
         "html_content": "<p>tutorial</p>"
+      },
+      {
+        "title": "title",
+        "html_content": "<p>tutorial</p>"
       }
     ]
   }

@@ -1,6 +1,6 @@
 <template>
   <v-app>
-      <v-navigation-drawer class="hidden-md-and-up" fixed slide-x-transition temporary v-model="nav">
+      <v-navigation-drawer fixed slide-x-transition temporary v-if="isMobile" v-model="nav">
           <v-toolbar flat>
               <v-list>
                   <v-list-tile>
@@ -64,11 +64,16 @@
                 </v-list>
             </v-menu>
         </template>
-
     </v-toolbar>
     <v-container>
-        <v-layout :class="isMobile ? 'column' : 'row'">
-            <v-flex xs10>
+        <v-fab-transition v-if="!isMobile">
+            <v-btn :color="contain[size].color" @click="size === contain.length-1 ? size = 0 : size++" absolute bottom
+                   class="mb-5 elevation-10" fab fixed right>
+                <v-icon small>{{contain[size].icon}}</v-icon>
+            </v-btn>
+        </v-fab-transition>
+        <v-layout :class="isMobile ? 'column' : 'row'" justify-center>
+            <v-flex :class="'xs'+contain[size].size">
                 <router-view></router-view>
             </v-flex>
             <v-flex :class="isMobile ? 'pt-3' : 'pl-3'" xs2>
@@ -83,7 +88,6 @@
 <script>
     import Sidebar from './components/SideBar'
     import Footer from './components/Footer'
-    import tutorials from '../public/json/tutorials'
 
 export default {
   name: 'App',
@@ -92,6 +96,19 @@ export default {
   },
   data () {
     return {
+        size: 0,
+        contain: [
+            {
+                size: 10,
+                icon: 'fas fa-arrow-left',
+                color: 'info'
+            },
+            {
+                size: 8,
+                icon: 'fas fa-arrow-right',
+                color: 'primary'
+            }
+        ],
         buttons: [
             {
                 name: '首頁',
@@ -215,3 +232,8 @@ export default {
     }
 }
 </script>
+<style scoped>
+    *, *::before, *::after {
+        transition: all .3s ease-in-out;
+    }
+</style>

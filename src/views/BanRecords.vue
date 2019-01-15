@@ -15,7 +15,7 @@
                         <v-radio :value="true" label="IP封禁"></v-radio>
                     </v-radio-group>
                     <v-spacer></v-spacer>
-                    <v-text-field :style="!isMobile ? 'width:50px' : ''" @change="()=>window.alert('do something')"
+                    <v-text-field :style="!isMobile ? 'width:50px' : ''"
                                   append-icon="search" hide-details
                                   label="搜索" single-line v-model="search"></v-text-field>
                 </v-layout>
@@ -104,7 +104,7 @@
                     this.loading = false;
                     return true;
                 }).catch(() => {
-                    return this.get_ban_local();
+                    return this.get_ban_local(ip);
                 });
             },
             hideIP(ip) {

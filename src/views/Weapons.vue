@@ -38,8 +38,8 @@
                                                 v-else-if="props.item.new">新</span></v-badge>
                                     </v-card-title>
                                     <v-divider></v-divider>
-                                    <v-card-text>
-                                        <span class="subheading">獲得方法: <v-chip>{{props.item.price}}</v-chip></span>
+                                    <v-card-text class="text-xs-center">
+                                        <v-chip>{{props.item.price}}</v-chip>
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
