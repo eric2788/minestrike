@@ -72,7 +72,7 @@
                 <v-icon small>{{contain[size].icon}}</v-icon>
             </v-btn>
         </v-fab-transition>
-        <v-layout :class="isMobile ? 'column' : 'row'" justify-center>
+          <v-layout :class="isMobile ? 'column' : 'row wrap'" justify-center>
             <v-flex :class="'xs'+contain[size].size+' '+(isDestop ? 'lg'+(contain[size].size+1) : '')">
                 <router-view></router-view>
             </v-flex>

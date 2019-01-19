@@ -17,14 +17,14 @@
                     </v-layout>
                 </v-card-title>
                 <v-card-text>
-                    <v-data-iterator :content-class="'wrap fill-height '+(isMobile ? 'column' : 'row')"
+                    <v-data-iterator :content-class="(isMobile ? 'column' : 'row wrap')"
                                      :custom-filter="filteredItems"
                                      :items="weapons.boxes" :pagination.sync="pagination"
                                      :rows-per-page-items="rowsPerPageItems" :search="search"
                                      content-tag="v-layout" no-data-text="無可用數據" no-results-text="沒有找到匹配記錄"
                                      rows-per-page-text="每頁記錄數：">
                         <template slot="item" slot-scope="props">
-                            <v-flex fill-height xs2>
+                            <v-flex xs2>
                                 <v-card :class="{'mt-3': isMobile}">
                                     <div style="padding: 10px">
 

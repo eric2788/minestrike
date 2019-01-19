@@ -5,7 +5,7 @@
         </v-toolbar>
         <v-card class="elevation-2">
             <v-card-title>
-                <v-layout :class="(isMobile ? 'wrap' : '')">
+                <v-layout :class="(isMobile ? '' : 'wrap')">
                     <v-btn :disabled="loading || countdown!==0" :loading="loading" @click="update_rank"
                            class="success mt-3">
                         {{countdown !== 0 ? '冷卻 '+countdown+'秒' : '刷新'}}
