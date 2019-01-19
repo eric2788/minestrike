@@ -67,7 +67,7 @@
     </v-toolbar>
     <v-container>
         <v-fab-transition v-if="!isMobile">
-            <v-btn :color="contain[size].color" @click="size === contain.length-1 ? size = 0 : size++" absolute bottom
+            <v-btn :color="contain[size].color" @click="changeSize" absolute bottom
                    class="mb-5 elevation-10" fab fixed right>
                 <v-icon small>{{contain[size].icon}}</v-icon>
             </v-btn>
@@ -89,7 +89,7 @@
     import Sidebar from './components/SideBar'
     import Footer from './components/Footer'
 
-export default {
+    export default {
   name: 'App',
   components: {
       Sidebar, Footer
@@ -166,7 +166,17 @@ export default {
     },
     methods: {
         toTop: () => window.scrollTo(0, 0),
+        changeSize() {
+            this.size === this.contain.length - 1 ? this.size = 0 : this.size++;
+            window.localStorage.setItem("size", this.size + "");
+        }
     },
+        mounted() {
+            let size = window.localStorage.getItem("size");
+            if (size != null) {
+                this.size = Number.parseInt(size);
+            }
+        },
     beforeCreate() {
         const tutorial_json = () => import('../public/json/tutorials.json');
         const weapons_json = () => import('../public/json/weapons.json');

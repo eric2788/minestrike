@@ -17,17 +17,21 @@
                     </v-layout>
                 </v-card-title>
                 <v-card-text>
-                    <v-data-iterator :content-class="(isMobile ? 'column' : 'row wrap')" :custom-filter="filteredItems"
+                    <v-data-iterator :content-class="'wrap fill-height '+(isMobile ? 'column' : 'row')"
+                                     :custom-filter="filteredItems"
                                      :items="weapons.boxes" :pagination.sync="pagination"
                                      :rows-per-page-items="rowsPerPageItems" :search="search"
                                      content-tag="v-layout" no-data-text="無可用數據" no-results-text="沒有找到匹配記錄"
                                      rows-per-page-text="每頁記錄數：">
                         <template slot="item" slot-scope="props">
-                            <v-flex xs2>
+                            <v-flex fill-height xs2>
                                 <v-card :class="{'mt-3': isMobile}">
                                     <div style="padding: 10px">
+
                                         <v-img :src="props.item.img_src" aspect-ratio="1" contain max-height="200px"
-                                               position="center"></v-img>
+                                               position="center">
+                                            <v-chip class="right" dark label small>{{props.item.gun}}</v-chip>
+                                        </v-img>
                                     </div>
                                     <v-card-title :style="'color: '+props.item.text_color"
                                                   class="headline grey lighten-3 justify-center">
@@ -39,7 +43,8 @@
                                     </v-card-title>
                                     <v-divider></v-divider>
                                     <v-card-text class="text-xs-center">
-                                        <v-chip>{{props.item.price}}</v-chip>
+                                        <v-chip disabled outline text-color="black">{{props.item.price}}</v-chip>
+
                                     </v-card-text>
                                 </v-card>
                             </v-flex>
