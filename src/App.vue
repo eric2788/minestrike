@@ -65,18 +65,18 @@
             </v-menu>
         </template>
     </v-toolbar>
-    <v-container>
-        <v-fab-transition v-if="!isMobile">
+      <v-container grid-list-md>
+          <v-fab-transition v-if="!isDestop">
             <v-btn :color="contain[size].color" @click="changeSize" absolute bottom
                    class="mb-5 elevation-10" fab fixed right>
                 <v-icon small>{{contain[size].icon}}</v-icon>
             </v-btn>
         </v-fab-transition>
         <v-layout :class="isMobile ? 'column' : 'row'" justify-center>
-            <v-flex :class="'xs'+contain[size].size">
+            <v-flex :class="'xs'+contain[size].size+' '+(isDestop ? 'lg'+(contain[size].size+1) : '')">
                 <router-view></router-view>
             </v-flex>
-            <v-flex :class="isMobile ? 'pt-3' : 'pl-3'" xs2>
+            <v-flex :class="{'pt-3': isMobile}" :lg3="isDestop" xs2>
                 <Sidebar></Sidebar>
             </v-flex>
         </v-layout>
@@ -162,6 +162,9 @@
             let result = [];
             Array.from(this.tutorial).forEach(item => result.push(item.name));
             return result;
+        },
+        isDestop() {
+            return this.$vuetify.breakpoint.lgAndDown;
         }
     },
     methods: {
