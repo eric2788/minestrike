@@ -171,11 +171,11 @@
         toTop: () => window.scrollTo(0, 0),
         changeSize() {
             this.size === this.contain.length - 1 ? this.size = 0 : this.size++;
-            window.localStorage.setItem("size", this.size + "");
+            window.localStorage.setItem("ms_container_size", this.size + "");
         }
     },
         mounted() {
-            let size = window.localStorage.getItem("size");
+            let size = window.localStorage.getItem("ms_container_size");
             if (size != null) {
                 this.size = Number.parseInt(size);
             }
