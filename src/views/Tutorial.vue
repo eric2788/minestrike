@@ -45,6 +45,9 @@
                 let result = [];
                 result = tutorial.find(item => item.name === this.type);
                 return result.content;
+            },
+            isMobile() {
+                return this.$store.state.isMobile
             }
         },
         methods: {
