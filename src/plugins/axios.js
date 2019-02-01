@@ -5,14 +5,14 @@ import axios from "axios";
 
 // Full config:  https://github.com/axios/axios#request-config
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
-axios.defaults.headers.get['Content-Type'] = 'application/json';
+axios.defaults.headers.get['Content-Type'] = 'application/json, charset=utf-8';
 let config = {
-  baseURL: "//minestrike.ddns.net:9090",
+    baseURL: "//localhost:9090/",
   timeout: 10 * 1000, // Timeout
   withCredentials: false, // Check cross-site Access-Control
 };
 
-const _axios = axios.create(config);
+export const _axios = axios.create(config);
 
 _axios.interceptors.request.use(
   function(config) {
@@ -21,6 +21,7 @@ _axios.interceptors.request.use(
   },
   function(error) {
     // Do something with request error
+      window.console.log(error);
     return Promise.reject(error);
   }
 );
@@ -33,6 +34,7 @@ _axios.interceptors.response.use(
   },
   function(error) {
     // Do something with response error
+      window.console.log(error);
     return Promise.reject(error);
   }
 );

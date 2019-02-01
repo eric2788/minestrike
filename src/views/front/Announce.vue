@@ -1,7 +1,7 @@
 <template>
   <v-content>
     <v-container pa-0>
-      <v-data-iterator :custom-filter="searchTitle" :items="home"
+      <v-data-iterator :custom-filter="searchTitle" :items="announce" v-if="!loading"
                        :pagination.sync="pagination"
                        :rows-per-page-items="rowsPerPageItems" :search="search"
                        content-tag="div" no-data-text="沒有文章" no-results-text="找不到此文章"
@@ -10,7 +10,7 @@
           <v-card :class="props.index!==0 ? 'mt-3' : ''">
             <v-card-title class="headline info darken-2 white--text">{{props.item.title}}</v-card-title>
             <v-divider></v-divider>
-            <v-card-text v-html="props.item.html_content"></v-card-text>
+            <v-card-text v-html="props.item.content"></v-card-text>
           </v-card>
         </template>
         <v-toolbar class="pt-4 white transparent" flat slot="footer">
@@ -18,12 +18,13 @@
                         v-model="search"></v-text-field>
         </v-toolbar>
       </v-data-iterator>
+      <v-progress-linear height="3" indeterminate v-else></v-progress-linear>
     </v-container>
   </v-content>
 </template>
 <script>
   export default {
-    name: 'Home',
+    name: 'Announce',
     data() {
       return {
         search: '',
@@ -32,13 +33,12 @@
           rowsPerPage: 3,
           descending: true,
           sortBy: "index"
-        }
+        },
+        loading: false,
+        announce: [],
       }
     },
     computed: {
-      home() {
-        return this.$store.state.home_json;
-      },
       isMobile() {
         return this.$store.state.isMobile;
       }
@@ -48,7 +48,17 @@
         let result = item;
         if (search.length > 0) result = item.filter(item => item.title.match(search));
         return result;
+      },
+      async get_announce() {
+        this.loading = true;
+        this.$axios({
+          method: 'get',
+          url: 'announce'
+        }).then(res => this.announce = res.data).catch().finally(() => this.loading = false)
       }
+    },
+    mounted() {
+      this.get_announce();
     }
   }
 </script>

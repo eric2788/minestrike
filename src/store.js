@@ -1,7 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import func from './global-func'
+import {router} from "./router";
 
 Vue.use(Vuex);
+const fc = func();
 
 export default new Vuex.Store({
   state: {
@@ -9,15 +12,8 @@ export default new Vuex.Store({
     cooldown: 0,
     avatar_3d: false,
     ban_ip: false,
-    tutorial: '',
-    tutorial_json: [],
-    weapons_json: [],
-    home_json: [],
-    donation_json: [],
-    staff_json: [],
-    sidebar_json: [],
-    footer_json: {},
-    social_json: []
+    admin: false,
+    session: ''
   },
   mutations: {
     updateMobile(state, boolean){
@@ -32,47 +28,32 @@ export default new Vuex.Store({
     setIP(state, isIP) {
       state.ban_ip = isIP
     },
-    setTutType(state, type) {
-      state.tutorial = type
+    setLogin(state, boolean) {
+      state.admin = boolean
     },
-    setTutorial(state, val) {
-      state.tutorial_json = val
-    },
-    setWeapons(state, val) {
-      state.weapons_json = val
-    },
-    setHome(state, val) {
-      state.home_json = val
-    },
-    setDonation(state, val) {
-      state.donation_json = val
-    },
-    setStaff(state, val) {
-      state.staff_json = val
-    },
-    setSideBar(state, val) {
-      state.sidebar_json = val
-    },
-    setFooter(state, val) {
-      state.footer_json = val
-    },
-    setSocial(state, val) {
-      state.social_json = val
+    setSession(state, id) {
+      state.session = id;
     }
-    //not working!
-    /*setJSON(state, { weapon, home, donation, staff, sidebar, footer, social}){
-      state.weapons_json = weapon;
-      state.home_json = home;
-      state.donation_json = donation;
-      state.staff_json = staff;
-      state.sidebar_json = sidebar;
-      state.footer_json = footer;
-      state.social_json = social;
-    }*/
   },
   actions: {
-    updateMobile({commit},mobile){
-      commit('updateMobile', mobile)
+    setSession({commit}, obj) {
+      commit('setLogin', true);
+      commit('setSession', obj.uuid);
+      if (obj.remember) fc.setCookie("minestrike_session", obj.uuid, 7);
+      router.replace('/admin')
+    },
+    loadSession({state, commit}) {
+      if (state.session) return;
+      const id = fc.getCookie("minestrike_session");
+      if (id == null) return;
+      commit('setSession', id);
+      return new Promise(resolve => resolve());
+    },
+    logout({commit}) {
+      commit('setLogin', false);
+      commit('setSession', '');
+      fc.delCookie("minestrike_session");
+      router.replace('/');
     }
   }
 })

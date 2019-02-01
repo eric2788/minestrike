@@ -45,15 +45,26 @@
             return {
                 search: '',
                 pagination: {rowsPerPage: -1},
+                loading: false,
+                staffs: []
             }
         },
         computed: {
             isMobile() {
                 return this.$store.state.isMobile
             },
-            staffs() {
-                return this.$store.state.staff_json
+        },
+        methods: {
+            async get_Staffs() {
+                this.loading = true;
+                this.$axios({
+                    method: 'get',
+                    url: 'about'
+                }).then(res => this.staffs = res.data).catch().finally(() => this.loading = false)
             }
+        },
+        mounted() {
+            this.get_Staffs();
         }
     }
 </script>

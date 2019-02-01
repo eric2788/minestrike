@@ -34,10 +34,13 @@
                 fjs.parentNode.insertBefore(js, fjs);
             }(document, 'script', 'facebook-jssdk'));
         },
-        computed: {
-            sidebar() {
-                return this.$store.state.sidebar_json
+        data() {
+            return {
+                sidebar: []
             }
+        },
+        beforeCreate() {
+            fetch("/json/sidebar.json").then(r => r.json()).then(data => this.sidebar = data)
         }
     }
 </script>

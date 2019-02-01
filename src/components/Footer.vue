@@ -3,8 +3,8 @@
         <v-card class="info darken-4 flex" raised tile>
             <v-card-title class="white--text pt-4 pb-4">
                 <template v-if="!isMobile">
-                    <h2 class="pr-2 headline">{{footertxt.title}}</h2>
-                    <span class="subheading">{{footertxt.subheading}}</span>
+                    <h2 class="pr-2 headline">{{footer.title}}</h2>
+                    <span class="subheading">{{footer.subheading}}</span>
                 </template>
                 <v-spacer></v-spacer>
                 <!-- Not work on production mode -->
@@ -41,12 +41,16 @@
             isMobile() {
                 return this.$store.state.isMobile
             },
-            links() {
-                return this.$store.state.social_json
-            },
-            footertxt() {
-                return this.$store.state.footer_json
+        },
+        data() {
+            return {
+                footer: {},
+                links: []
             }
+        },
+        beforeCreate() {
+            fetch("/json/footer.json").then(r => r.json()).then(data => this.footer = data);
+            fetch("/json/social_icon.json").then(r => r.json()).then(data => this.links = data);
         }
     }
 </script>

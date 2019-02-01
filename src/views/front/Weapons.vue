@@ -4,7 +4,7 @@
             <v-toolbar class="info darken-2 white--text" slot="header">
                 <v-toolbar-title class="headline">造型展示</v-toolbar-title>
                 <v-spacer></v-spacer>
-                <v-btn :href="weapons.contact_link" class="warning">聯絡服主以進行購買</v-btn>
+                <v-btn :href="contact_link" class="warning">聯絡服主以進行購買</v-btn>
             </v-toolbar>
             <v-card>
                 <v-card-title>
@@ -19,7 +19,7 @@
                 <v-card-text>
                     <v-data-iterator :content-class="(isMobile ? 'column' : 'row wrap')"
                                      :custom-filter="filteredItems"
-                                     :items="weapons.boxes" :pagination.sync="pagination"
+                                     :items="weapons" :pagination.sync="pagination"
                                      :rows-per-page-items="rowsPerPageItems" :search="search"
                                      content-tag="v-layout" no-data-text="無可用數據" no-results-text="沒有找到匹配記錄"
                                      rows-per-page-text="每頁記錄數：">
@@ -28,7 +28,7 @@
                                 <v-card :class="{'mt-3': isMobile}">
                                     <div style="padding: 10px">
 
-                                        <v-img :src="props.item.img_src" aspect-ratio="1" contain max-height="200px"
+                                        <v-img :src="props.item.src" aspect-ratio="1" contain max-height="200px"
                                                position="center">
                                             <v-chip class="right" dark label small>{{props.item.gun}}</v-chip>
                                         </v-img>
@@ -62,35 +62,35 @@
         name: "Weapons",
         data() {
             return {
+                loading: false,
                 selected_type: '所有',
                 selected_guns: '所有',
                 search: '',
+                contact_link: '',
                 rowsPerPageItems: [6, 12, 24, {text: "All", value: -1}],
                 pagination: {
                     rowsPerPage: 24,
                     descending: false,
                     sortBy: "priority"
                 },
+                weapons: [],
+                guns: [],
+                types: []
             }
         },
         computed: {
-            weapons() {
-                return this.$store.state.weapons_json
-            },
             isMobile() {
                 return this.$store.state.isMobile;
             },
             gun_list() {
-                let array = [];
-                let result = this.weapons.guns.filter((item) => item.type === this.selected_type || this.selected_type === '所有');
-                result.forEach(t => array.push(t.gun));
-                if (array.length > 1) array.push("所有");
-                return array
+                let guns = this.guns;
+                if (!guns.includes("所有")) guns.push("所有");
+                return guns;
             },
             type_list() {
-                let array = this.weapons.types;
-                if (array.length > 1) array.push("所有");
-                return array;
+                let types = this.types;
+                if (!types.includes("所有")) types.push("所有");
+                return types;
             }
         },
         methods: {
@@ -100,10 +100,33 @@
                 if (this.selected_guns !== '所有') result = items.filter(r => r.gun === this.selected_guns);
                 if (search.length > 0) result = items.filter(r => r.name.match(search) || r.gun.match(search) || r.type.match(search));
                 return result;
+            },
+            async get_Weapons() {
+                this.loading = true;
+                this.$axios({
+                    method: 'get',
+                    url: 'weapon'
+                }).then(res => {
+                    this.weapons = res.data;
+                }).catch().finally(() => this.loading = false)
+            },
+            async get_Categories() {
+                this.$axios({
+                    method: 'get',
+                    url: 'weapon/category'
+                }).then(res => {
+                    this.guns = res.data.guns;
+                    this.types = res.data.types;
+                }).catch();
             }
         },
         mounted() {
+            this.get_Weapons();
+            this.get_Categories();
             this.pagination.rowsPerPage = this.isMobile ? 6 : 24
+        },
+        beforeCreate() {
+            fetch("/json/weapons.json").then(r => r.json()).then(data => this.contact_link = data.contact_link);
         }
     }
 </script>

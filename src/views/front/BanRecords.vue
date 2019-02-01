@@ -82,30 +82,17 @@
             }
         },
         methods: {
-            async get_ban_local(ip) {
-                let data = ip ? 'baniplist' : 'banlist';
-                this.$axios.get("//minestrike.ownmc.space/php/api.php?data=" + data).then(res => {
-                    this.ban_list_local = res.data;
-                    this.loading = false;
-                    return true;
-                }).catch(() => {
-                    this.update_fail = true;
-                    this.loading = false;
-                    return false;
-                });
-            },
             async get_ban(ip) {
                 this.loading = true;
+                const data = ip ? 'baniplist' : 'banlist';
                 this.$axios({
                     method: 'get',
-                    url: ip ? '/baniplist' : '/banlist'
+                    url: "./php/api.php?data=" + data
                 }).then(res => {
                     this.ban_list_local = res.data;
                     this.loading = false;
                     return true;
-                }).catch(() => {
-                    return this.get_ban_local(ip);
-                });
+                }).catch(err => window.console.log(err)).finally(() => this.loading = false);
             },
             hideIP(ip) {
                 let ipnodes = ip.toString().split(".");

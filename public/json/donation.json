@@ -1,29 +1,15 @@
 {
   "cards": [
     {
-      "title": "標題",
+      "id": 0,
+      "title": "標題 FuckOff",
       "html_content": "<p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p>"
     },
     {
+      "id": 1,
       "title": "標題",
       "html_content": "<p>內容2</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p><p>內容1</p>"
     }
   ],
-  "vip_title": "VIP玩家列表",
-  "vipers": [
-    {
-      "name": "Yonho",
-      "uuid": "7b19bea9-1fcf-4550-a771-550007948ac7",
-      "rank": "VIP",
-      "priority": 2,
-      "color": "red"
-    },
-    {
-      "name": "Solo_Rain",
-      "uuid": "a2ecdd0c-5519-458c-8f7a-a964b9df971f",
-      "rank": "VIP++",
-      "priority": 1,
-      "color": "green"
-    }
-  ]
+  "vip_title": "VIP玩家列表"
 }

@@ -89,61 +89,36 @@
             }
         },
         methods: {
-            async get_rank_local() {
-                this.$axios.get("//minestrike.ownmc.space/php/api.php?data=list").then(res => {
-                    this.rank_leader_local = res.data;
-                    this.last_update = new Date().toLocaleTimeString();
-                    this.loading = false;
-                    return true;
-                }).catch(() => {
-                    this.update_fail = true;
-                    this.loading = false;
-                    return false;
-                });
-            },
             async get_rank(){
                 this.loading = true;
                 this.$axios({
                     method: 'get',
-                    url: '/list'
+                    url: './php/api.php?data=list'
                 }).then(res=>{
                     this.rank_leader_local = res.data;
                     this.last_update = new Date().toLocaleTimeString();
-                    this.loading = false;
                     return true;
-                }).catch(()=> {
-                    return this.get_rank_local();
-                });
-            },
-            async update_rank_local() {
-                this.$axios.get('//minestrike.ownmc.space/php/api.php?data=refresh').then(res => {
-                    if (res.data.success && this.get_rank_local()) {
-                        this.update_success = true;
-                        this.cooldown(30);
-                        return true;
-                    }
-                }).catch(() => {
-                    this.update_fail = true;
-                    this.loading = false;
+                }).catch(err => {
+                    window.console.log(err);
                     return false;
-                });
+                }).finally(() => this.loading = false);
             },
             async update_rank(){
                 this.loading = true;
                 this.$axios({
                     method: 'get',
-                    url: '/refresh'
+                    url: './php/api.php?data=refresh'
                 }).then(res=>{
                     if (res.data.success && this.get_rank()) {
                         this.update_success = true;
                         this.cooldown(30);
                     }else{
                         this.update_fail = true;
-                        this.loading = false;
                     }
-                }).catch(()=> {
-                    this.update_rank_local()
-                });
+                }).catch(err => {
+                    window.console.log(err);
+                    this.update_fail = false;
+                }).finally(() => this.loading = false);
             },
             headskin(uuid,three_d){
                 return (three_d ? 'https://crafatar.com/renders/head/': 'https://crafatar.com/avatars/')+uuid.toString()+(three_d ? '?scale=10' : '')
