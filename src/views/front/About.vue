@@ -21,12 +21,12 @@
                                                alt="Loading..." contain max-height="200px">
                                         </v-img>
                                     </div>
-                                    <v-card-title class="headline grey lighten-3 justify-center">{{props.item.name}}
+                                    <v-card-title class="headline grey lighten-3 justify-center">{{props.item.username}}
                                     </v-card-title>
                                     <v-card-text class="subheading text-xs-center">
                                         <v-chip dark outline text-color="black">{{props.item.position}}</v-chip>
                                         <br>
-                                        <v-btn :href="props.item.contact_link" block class="primary">聯絡</v-btn>
+                                        <v-btn :href="props.item.contact" block class="primary">聯絡</v-btn>
                                     </v-card-text>
                                 </v-card>
                             </v-flex>

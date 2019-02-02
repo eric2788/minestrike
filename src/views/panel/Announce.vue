@@ -1,11 +1,10 @@
 <template>
     <v-container>
-        <v-alert :value="true" dismissible type="info">在右邊的按鈕中，選擇你欲修改的公告標題進行編輯。</v-alert>
         <v-card>
             <v-card-title class="info darken-3 white--text headline">
                 {{ addnew ? '新增' : '修改'}}公告:
                 <v-spacer></v-spacer>
-                <v-menu left offset-y>
+                <v-menu left max-height="600" offset-y>
                     <v-btn class="info" fab slot="activator" small>
                         <v-icon>create</v-icon>
                     </v-btn>
@@ -23,11 +22,12 @@
                 </v-menu>
             </v-card-title>
             <v-card-text>
-                <v-text-field label="標題" v-model="title"></v-text-field>
+                <v-text-field :rules="[v=>!!v || '必填']" label="標題" v-model="title"></v-text-field>
                 <VueEditor v-model="content"></VueEditor>
             </v-card-text>
             <v-card-actions>
-                <v-btn :disabled="loading" :loading="loading" @click="addnew ? createAnnounce() : editAnnounce(id)"
+                <v-btn :disabled="loading || !title" :loading="loading"
+                       @click="addnew ? createAnnounce() : editAnnounce(id)"
                        class="success">儲存
                 </v-btn>
                 <v-btn :disabled="loading" :loading="loading" @click="deleteAnnounce(id)" class="error" v-if="!addnew">

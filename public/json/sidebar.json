@@ -1,9 +1,11 @@
 [
   {
+    "id": 0,
     "title": "Sidebar標題",
     "html_content": "<p>內容1</p><p>內容1</p>"
   },
   {
+    "id": 1,
     "title": "標題",
     "html_content": "<p>內容2</p><p>內容1</p>"
   }

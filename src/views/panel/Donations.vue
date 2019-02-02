@@ -1,11 +1,10 @@
 <template>
     <v-container>
-        <v-alert :value="true" dismissible type="info">在右邊的按鈕中，選擇你欲修改的板塊標題進行編輯。</v-alert>
         <v-card class="mb-3">
             <v-card-title class="info darken-3 white--text headline">
                 {{ cards_addnew ? '新增' : '修改'}}贊助板塊:
                 <v-spacer></v-spacer>
-                <v-menu left offset-y>
+                <v-menu left max-height="600" offset-y>
                     <v-btn class="info" fab slot="activator" small>
                         <v-icon>create</v-icon>
                     </v-btn>
@@ -16,7 +15,7 @@
                         <v-list-tile @click="addNew(false)">
                             <v-list-tile-title>
                                 <v-icon left small>add</v-icon>
-                                添加新公告
+                                添加新板塊
                             </v-list-tile-title>
                         </v-list-tile>
                     </v-list>
@@ -27,24 +26,25 @@
                 <VueEditor v-model="content"></VueEditor>
             </v-card-text>
             <v-card-actions>
-                <v-btn :disabled="loading" :loading="loading" @click="cards_addnew ? addCards : editCards(id)"
+                <v-btn :disabled="loading" :loading="loading" @click="cards_addnew ? addCards() : editCards(id)"
                        class="success">儲存
                 </v-btn>
-                <v-btn :disabled="loading" :loading="loading" class="error" v-if="!cards_addnew">刪除此板塊</v-btn>
+                <v-btn :disabled="loading" :loading="loading" @click="delCards(id)" class="error" v-if="!cards_addnew">
+                    刪除此板塊
+                </v-btn>
             </v-card-actions>
         </v-card>
-        <v-alert :value="true" dismissible type="info">在右邊的按鈕中，選擇你欲修改的人物標題進行編輯。</v-alert>
         <v-card>
             <v-card-title class="info darken-3 white--text headline">
                 {{ vipers_addnew ? '新增' : '修改'}}人物:
                 <v-spacer></v-spacer>
-                <v-menu left offset-y>
+                <v-menu left max-height="600" offset-y>
                     <v-btn class="info" fab slot="activator" small>
                         <v-icon>create</v-icon>
                     </v-btn>
                     <v-list>
                         <v-list-tile :key="i" @click="select_box(person.uuid,true)" v-for="(person,i) in vipers">
-                            <v-list-tile-title>{{person.name}}</v-list-tile-title>
+                            <v-list-tile-title>{{person.username}}</v-list-tile-title>
                         </v-list-tile>
                         <v-list-tile @click="addNew(true)">
                             <v-list-tile-title>
@@ -59,24 +59,24 @@
                 <v-form ref="form" v-model="valid">
                     <v-layout :class="this.$vuetify.breakpoint.mdAndDown ? 'column' : 'row wrap'">
                         <v-flex xs4>
-                            <v-img :src="src" alt="找不到此UUID" contain
+                            <v-img :src="vipers_addnew ? src : uuidSkin" alt="找不到此UUID" contain
                                    lazy-src="https://crafatar.com/renders/body/8667ba71-b85a-4004-af54-457a9734eed7"
                                    max-height="300px"></v-img>
                         </v-flex>
                         <v-flex xs8>
-                            <v-text-field :disabled="!vipers_addnew" counter="36" label="UUID"
-                                          v-model="uuid"></v-text-field>
-                            <v-text-field label="用戶名" v-model="username"></v-text-field>
-                            <v-text-field label="顏色" v-model="color"></v-text-field>
-                            <v-text-field label="職位" v-model="rank"></v-text-field>
+                            <v-text-field :disabled="!vipers_addnew" :rules="rule" @click:append="headSkin(uuid)"
+                                          append-icon="image_search"
+                                          counter="36" label="UUID" v-model="uuid"></v-text-field>
+                            <v-text-field :rules="rule" label="用戶名" v-model="username"></v-text-field>
+                            <v-text-field :rules="rule" label="顏色" v-model="color"></v-text-field>
+                            <v-text-field :rules="rule" label="職位" v-model="rank"></v-text-field>
                         </v-flex>
                     </v-layout>
                 </v-form>
             </v-card-text>
             <v-card-actions>
                 <v-btn :disabled="loading || !valid" :loading="loading"
-                       @click="vipers_addnew ? createVIP : editVIP(uuid)" @click:append="headSkin(uuid)"
-                       append-icon="image_search" class="success">儲存
+                       @click="vipers_addnew ? createVIP() : editVIP(uuid)" class="success">儲存
                 </v-btn>
                 <v-btn :disabled="loading" :loading="loading" @click="deleteVIP(uuid)" class="error"
                        v-if="!vipers_addnew">刪除此人物
@@ -102,6 +102,7 @@
         },
         data() {
             return {
+                rule: [v => !!v || '必填'],
                 src: '',
                 loading: false,
                 uuid: '',
@@ -112,7 +113,7 @@
                 vipers_addnew: false,
                 title: '',
                 content: '',
-                id: '',
+                id: 0,
                 valid: false,
                 vipers: [],
                 cards: [],
@@ -122,10 +123,16 @@
                 }
             }
         },
-        computed: {},
+        computed: {
+            uuidSkin() {
+                const uuid = this.uuid;
+                if (!uuid) return '';
+                else return 'https://crafatar.com/renders/body/' + uuid;
+            }
+        },
         methods: {
             headSkin(uuid) {
-                this.src = "https://crafatar.com/renders/body/" + uuid
+                this.src = !uuid ? 'https://crafatar.com/renders/body/8667ba71-b85a-4004-af54-457a9734eed7' : "https://crafatar.com/renders/body/" + uuid
             },
             async get_vipers() {
                 this.loading = true;
@@ -137,7 +144,7 @@
                     if (res.data.length === 0) this.vipers_addnew = true;
                     else {
                         this.uuid = res.data[0].uuid;
-                        this.username = res.data[0].name;
+                        this.username = res.data[0].username;
                         this.rank = res.data[0].rank;
                         this.color = res.data[0].color;
                     }
@@ -151,12 +158,13 @@
                     let result = cards.find(record => record.id === id);
                     this.title = result.title;
                     this.content = result.html_content;
+                    this.id = result.id
                 } else {
                     this.vipers_addnew = false;
                     const vipers = this.vipers;
                     let result = vipers.find(record => record.uuid === id);
                     this.uuid = result.uuid;
-                    this.username = result.name;
+                    this.username = result.username;
                     this.rank = result.rank;
                     this.color = result.color;
                 }
@@ -175,7 +183,13 @@
                 this.loading = true;
                 this.$axios({
                     method: 'post',
-                    url: 'donation'
+                    url: 'donation',
+                    data: {
+                        uuid: this.uuid,
+                        color: this.color,
+                        username: this.username,
+                        rank: this.rank,
+                    }
                 }).then(res => {
                     if (res.data.uuid != null) {
                         this.operation.success = true;
@@ -192,7 +206,12 @@
                 this.loading = true;
                 this.$axios({
                     method: 'put',
-                    url: 'donation/' + uuid
+                    url: 'donation/' + uuid,
+                    data: {
+                        color: this.color,
+                        username: this.username,
+                        rank: this.rank,
+                    }
                 }).then(res => {
                     if (res.data.uuid != null) {
                         this.operation.success = true;
@@ -222,14 +241,6 @@
                     this.operation.fail = true;
                 }).finally(() => this.loading = false)
             },
-            addCards() {
-                this.cards.push({
-                    title: this.title,
-                    html_content: this.content
-                });
-                this.writeFile("/json/donation.json", "JSON");
-                this.getCards();
-            },
             editCards(id) {
                 this.cards.map(card => {
                     if (card.id === id) {
@@ -237,8 +248,58 @@
                         card.html_content = this.content;
                     }
                 });
-                this.writeFile("/json/donation.json", "JSON");
-                this.getCards();
+                this.saveCards();
+            },
+            addCards() {
+                const id = () => {
+                    let random = 0;
+                    let i = 10;
+                    while (true) {
+                        random = Math.round(Math.random() * i);
+                        const zero = this.cards.filter(data => data.id === random).length === 0;
+                        if (zero) break;
+                        else i += 5;
+                    }
+                    return random;
+                };
+                this.cards.push({
+                    id: id(),
+                    title: this.title,
+                    html_content: this.content
+                });
+                this.saveCards();
+            },
+            delCards(id) {
+
+                let index = -1;
+                for (let i = 0; i < this.cards.length; i++) {
+                    if (this.cards[i].id === id) index = i;
+                }
+                window.console.log(index);
+                if (index > -1) {
+                    this.cards.splice(index, 1);
+                    this.saveCards();
+                } else {
+                    this.operation.fail = true;
+                }
+            },
+            async saveCards() {
+                this.loading = true;
+                this.$axios({
+                    method: 'post',
+                    url: '/php/cards.php',
+                    data: this.cards
+                }).then(res => {
+                    if (res.data.success) {
+                        this.operation.success = true;
+                        this.getCards();
+                    } else {
+                        this.operation.fail = true;
+                    }
+                }).catch(err => {
+                    this.operation.fail = true;
+                    window.console.log(err);
+                }).finally(() => this.loading = false);
             },
             getCards() {
                 fetch("/json/donation.json").then(r => r.json()).then(data => {
@@ -255,6 +316,7 @@
         mounted() {
             this.get_vipers();
             this.getCards();
+            this.headSkin(this.uuid)
         }
     }
 </script>

@@ -24,7 +24,7 @@
                                                alt="Loading..." contain max-height="200px">
                                         </v-img>
                                     </div>
-                                    <v-card-title class="headline grey lighten-3 justify-center">{{props.item.name}}
+                                    <v-card-title class="headline grey lighten-3 justify-center">{{props.item.username}}
                                     </v-card-title>
                                     <v-card-text class="subheading text-xs-center">
                                         <v-chip :text-color="props.item.color" dark label outline>{{props.item.rank}}

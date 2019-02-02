@@ -1,17 +1,16 @@
 <template>
     <v-container>
-        <v-alert :value="true" dismissible type="info">在右邊的按鈕中，選擇你欲修改的人物標題進行編輯。</v-alert>
         <v-card>
             <v-card-title class="info darken-3 white--text headline">
                 {{ addnew ? '新增' : '修改'}}人物:
                 <v-spacer></v-spacer>
-                <v-menu left offset-y>
+                <v-menu left max-height="600" offset-y>
                     <v-btn class="info" fab slot="activator" small>
                         <v-icon>create</v-icon>
                     </v-btn>
                     <v-list>
                         <v-list-tile :key="i" @click="select_box(person.uuid)" v-for="(person,i) in about">
-                            <v-list-tile-title>{{person.name}}</v-list-tile-title>
+                            <v-list-tile-title>{{person.username}}</v-list-tile-title>
                         </v-list-tile>
                         <v-list-tile @click="addNew">
                             <v-list-tile-title>
@@ -26,7 +25,7 @@
                 <v-form ref="form" v-model="valid">
                     <v-layout :class="this.$vuetify.breakpoint.mdAndDown ? 'column' : 'row wrap'">
                         <v-flex xs4>
-                            <v-img :src="src" alt="找不到此UUID" contain
+                            <v-img :src="(addnew ? src : uuidSkin)" alt="找不到此UUID" contain
                                    lazy-src="https://crafatar.com/renders/body/8667ba71-b85a-4004-af54-457a9734eed7"
                                    max-height="300px"></v-img>
                         </v-flex>
@@ -44,7 +43,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-btn :disabled="loading || !valid" :loading="loading"
-                       @click="addnew ? create_about : edit_about(uuid)" class="success">儲存
+                       @click="addnew ? create_about() : edit_about(uuid)" class="success">儲存
                 </v-btn>
                 <v-btn :disabled="loading" :loading="loading" @click="delete_about(uuid)" class="error" v-if="!addnew">
                     刪除此人物
@@ -83,16 +82,22 @@
                 }
             }
         },
-        computed: {},
+        computed: {
+            uuidSkin() {
+                const uuid = this.uuid;
+                if (!uuid) return '';
+                else return 'https://crafatar.com/renders/body/' + uuid;
+            }
+        },
         methods: {
             select_box(uuid) {
                 this.addnew = false;
                 const person = this.about;
                 let result = person.find(record => record.uuid === uuid);
-                this.username = result.name;
+                this.username = result.username;
                 this.uuid = result.uuid;
                 this.position = result.position;
-                this.contact = result.contact_link;
+                this.contact = result.contact;
             },
             addNew() {
                 this.$refs.form.reset();
@@ -102,10 +107,17 @@
                 this.loading = true;
                 this.$axios({
                     method: 'post',
-                    url: 'about'
+                    url: 'about',
+                    data: {
+                        uuid: this.uuid,
+                        username: this.username,
+                        position: this.position,
+                        contact: this.contact
+                    }
                 }).then(res => {
                     if (res.data.uuid != null) {
                         this.operation.success = true;
+                        this.get_About();
                     } else {
                         this.operation.fail = true
                     }
@@ -118,10 +130,17 @@
                 this.loading = true;
                 this.$axios({
                     method: 'put',
-                    url: 'about/' + uuid
+                    url: 'about/' + uuid,
+                    data: {
+                        uuid: this.uuid,
+                        username: this.username,
+                        position: this.position,
+                        contact: this.contact
+                    }
                 }).then(res => {
                     if (res.data.uuid != null) {
                         this.operation.success = true;
+                        this.get_About();
                     } else {
                         this.operation.fail = true
                     }
@@ -134,10 +153,11 @@
                 this.loading = true;
                 this.$axios({
                     method: 'delete',
-                    url: 'about/' + uuid
+                    url: 'about/' + uuid,
                 }).then(res => {
                     if (res.data.success) {
                         this.operation.success = true;
+                        this.get_About();
                     } else {
                         this.operation.fail = true
                     }
@@ -153,7 +173,7 @@
                 window.console.log('Requesting: ' + link);
                 this.$axios.get(link).then(res => {
                     window.alert(res.data);
-                    this.username = res.data[0].name;
+                    this.username = res.data[0].username;
                     window.alert(res.data.length);
                 }).catch(() => {
                     //ignore
@@ -171,17 +191,18 @@
                 }).catch((err) => window.console.log(err)).finally(() => this.loading = false)
             },
             get_Default(person) {
-                this.username = person[0].name;
+                this.username = person[0].username;
                 this.uuid = person[0].uuid;
                 this.position = person[0].position;
-                this.contact = person[0].contact_link;
+                this.contact = person[0].contact;
             },
             headSkin(uuid) {
-                this.src = "https://crafatar.com/renders/body/" + uuid
+                this.src = !uuid ? 'https://crafatar.com/renders/body/8667ba71-b85a-4004-af54-457a9734eed7' : 'https://crafatar.com/renders/body/' + uuid
             }
         },
         mounted() {
             this.get_About();
+            this.headSkin(this.uuid)
         }
 
     }

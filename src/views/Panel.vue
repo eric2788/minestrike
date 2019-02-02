@@ -1,9 +1,13 @@
 <template>
     <v-app>
-        <v-navigation-drawer :permanent="!isMobile" app fixed v-model="nav">
-            <v-card class="grey lighten-3" flat>
+        <v-navigation-drawer :permanent="!isMobile" app class="elevation-2" fixed v-model="nav">
+            <v-card class="primary darken-2" dark flat raised>
                 <v-card-title class="headline">
                     編輯選項
+                    <v-spacer></v-spacer>
+                    <v-chip class="primary darken-4" label>
+                        <v-icon dark>create</v-icon>
+                    </v-chip>
                 </v-card-title>
             </v-card>
             <v-divider></v-divider>
@@ -43,32 +47,37 @@
                     {
                         name: '首頁',
                         route: 'home',
-                        icon: ''
+                        icon: 'home'
                     },
                     {
                         name: '公告',
                         route: 'announce',
-                        icon: ''
+                        icon: 'announcement'
                     },
                     {
-                        name: '武器',
+                        name: '造型',
                         route: 'weapon',
-                        icon: ''
+                        icon: 'extension'
                     },
                     {
                         name: '教學',
                         route: 'tutorial',
-                        icon: ''
+                        icon: 'contact_support'
                     },
                     {
                         name: '贊助',
                         route: 'donate',
-                        icon: ''
+                        icon: 'attach_money'
                     },
                     {
                         name: '關於',
                         route: 'about',
-                        icon: ''
+                        icon: 'account_box'
+                    },
+                    {
+                        name: '右側欄',
+                        route: 'sidebar',
+                        icon: 'format_align_justify'
                     }
                 ]
             }

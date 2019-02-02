@@ -17,6 +17,7 @@
                     </v-layout>
                 </v-card-title>
                 <v-card-text>
+                    <v-progress-linear height="2" indeterminate v-if="loading"></v-progress-linear>
                     <v-data-iterator :content-class="(isMobile ? 'column' : 'row wrap')"
                                      :custom-filter="filteredItems"
                                      :items="weapons" :pagination.sync="pagination"
@@ -33,7 +34,7 @@
                                             <v-chip class="right" dark label small>{{props.item.gun}}</v-chip>
                                         </v-img>
                                     </div>
-                                    <v-card-title :style="'color: '+props.item.text_color"
+                                    <v-card-title :style="'color: '+props.item.color"
                                                   class="headline grey lighten-3 justify-center">
                                         <v-badge color="none" right>{{props.item.name}}<span slot="badge"
                                                                                              style="color: red"
@@ -71,7 +72,7 @@
                 pagination: {
                     rowsPerPage: 24,
                     descending: false,
-                    sortBy: "priority"
+                    sortBy: "name"
                 },
                 weapons: [],
                 guns: [],

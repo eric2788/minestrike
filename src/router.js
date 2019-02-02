@@ -93,7 +93,8 @@ export const router = new Router({
             about: () => import('./views/panel/About.vue'),
             donate: () => import('./views/panel/Donations.vue'),
             tutorial: () => import('./views/panel/Tutorials.vue'),
-            weapon: () => import('./views/panel/Weapons.vue')
+            weapon: () => import('./views/panel/Weapons.vue'),
+            sidebar: () => import('./views/panel/Sidebar.vue')
           }
         }
       ]

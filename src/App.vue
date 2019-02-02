@@ -20,6 +20,7 @@
 </script>
 <style scoped>
     *, *::before, *::after {
+        font-family: "Microsoft JhengHei", serif;
         transition: all .3s ease-in-out;
     }
 </style>
