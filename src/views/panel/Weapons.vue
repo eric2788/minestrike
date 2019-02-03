@@ -1,6 +1,6 @@
 <template>
     <v-container>
-        <v-card>
+        <v-card class="mb-3">
             <v-card-title class="info darken-3 white--text headline">
                 {{addnew ? '新增' : '修改'}}造型
                 <v-spacer></v-spacer>
@@ -37,6 +37,7 @@
                             <v-text-field :rules="rule" label="造型名稱" v-model="input.name"></v-text-field>
                             <v-text-field :rules="rule" label="獲得方法" v-model="input.price"></v-text-field>
                             <v-text-field :rules="rule" @click:append="getSkin(input.src)" append-icon="image_search"
+                                          suffix="查看預覽: "
                                           label="圖片連結" v-model="input.src"></v-text-field>
                         </v-flex>
                     </v-layout>
@@ -58,6 +59,19 @@
                 </v-btn>
             </v-card-actions>
         </v-card>
+        <v-card>
+            <v-card-title class="headline info darken-3 white--text">聯絡連結</v-card-title>
+            <v-card-text>
+                <v-form v-model="valid_link">
+                    <v-text-field :rules="[v => !!v || '必填', v=> v.toString().includes('https://') || '必須為Https連結']"
+                                  label="連結" v-model="link"></v-text-field>
+                </v-form>
+            </v-card-text>
+            <v-card-actions>
+                <v-btn :disabled="loading || !valid_link" :loading="loading" @click="save_link()" class="success">儲存
+                </v-btn>
+            </v-card-actions>
+        </v-card>
         <v-snackbar :timeout="3000" bottom v-model="operation.fail">操作失敗，請稍後再試。
             <v-btn @click="operation.fail = false" color="error" flat>返回</v-btn>
         </v-snackbar>
@@ -72,6 +86,8 @@
         name: "Weapons",
         data() {
             return {
+                valid_link: false,
+                link: '',
                 rule: [v => !!v || '必填'],
                 src: '',
                 input: {
@@ -177,6 +193,33 @@
                     window.console.log(err);
                     this.operation.fail = true
                 }).finally(() => this.loading = false)
+            },
+            get_link() {
+                fetch("/json/weapons.json").then(r => r.json()).then(data => this.link = data.contact_link);
+            },
+            async save_link() {
+                this.loading = true;
+                this.$axios({
+                    method: 'post',
+                    url: '//127.0.0.1/php/json.php',
+                    data: {
+                        json: 'weapons',
+                        content: {
+                            contact_link: this.link
+                        }
+                    }
+                }).then(res => {
+                    if (res.data.success) {
+                        this.operation.success = true;
+                        this.get_link();
+                    } else {
+                        window.console.log(res.data.error);
+                        this.operation.fail = true;
+                    }
+                }).catch(err => {
+                    this.operation.fail = true;
+                    window.console.log(err);
+                }).finally(() => this.loading = false);
             }
         },
         computed: {
@@ -185,6 +228,7 @@
             }
         },
         mounted() {
+            this.get_link();
             this.getWeapons();
         }
     }

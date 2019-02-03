@@ -31,10 +31,10 @@
                         </v-flex>
                         <v-flex xs8>
                             <v-text-field :disabled="!addnew" :rules="rule" @click:append="headSkin(uuid)"
-                                          append-icon="image_search" counter="36" label="UUID"
+                                          append-icon="image_search" counter="36" label="UUID" suffix="搜索皮膚: "
                                           v-model="uuid"></v-text-field>
-                            <v-text-field :loading="name_loading" :rules="rule" @click:append="getName(uuid)"
-                                          append-icon="autorenew" label="用戶名" v-model="username"></v-text-field>
+                            <v-text-field :loading="name_loading" :rules="rule"
+                                          label="用戶名" v-model="username"></v-text-field>
                             <v-text-field :rules="rule" label="職位" v-model="position"></v-text-field>
                             <v-text-field :rules="rule" label="聯絡連結" v-model="contact"></v-text-field>
                         </v-flex>
@@ -165,19 +165,6 @@
                     window.console.log(err);
                     this.operation.fail = true;
                 }).finally(() => this.loading = false)
-            },
-            async getName() {
-                const uuid = this.uuid.replace(new RegExp("-", "g"), "");
-                this.name_loading = true;
-                const link = 'https://api.mojang.com/user/profiles/' + uuid + '/names';
-                window.console.log('Requesting: ' + link);
-                this.$axios.get(link).then(res => {
-                    window.alert(res.data);
-                    this.username = res.data[0].username;
-                    window.alert(res.data.length);
-                }).catch(() => {
-                    //ignore
-                }).finally(() => this.name_loading = false);
             },
             async get_About() {
                 this.loading = true;

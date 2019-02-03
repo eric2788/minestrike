@@ -4,7 +4,9 @@
             <v-card :class="i!==0 ? 'mt-3' : ''" :key="i" v-for="(h,i) in cards">
                 <v-card-title class="headline info darken-2 white--text">{{h.title}}</v-card-title>
                 <v-divider></v-divider>
-                <v-card-text v-html="h.html_content"></v-card-text>
+                <v-card-text>
+                    <TuiEditorViewer :value="h.html_content"></TuiEditorViewer>
+                </v-card-text>
             </v-card>
             <v-card :class="{'mt-3': cards.length > 0}">
                 <v-card-title class="headline info darken-2 white--text">
@@ -33,6 +35,9 @@
                                 </v-card>
                             </v-flex>
                         </template>
+                        <template slot="pageText" slot-scope="props">
+                            正在列出 {{ props.pageStart }} - {{ props.pageStop }} 項, 總項目: {{ props.itemsLength }}
+                        </template>
                     </v-data-iterator>
                 </v-card-text>
             </v-card>
@@ -42,8 +47,10 @@
 
 <script>
 
+    import TuiEditorViewer from "@toast-ui/vue-editor/src/Viewer";
     export default {
         name: "Donation",
+        components: {TuiEditorViewer},
         data() {
             return {
                 search: '',

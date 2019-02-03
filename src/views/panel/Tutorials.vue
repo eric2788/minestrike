@@ -25,7 +25,7 @@
                 <v-form v-model="valid">
                     <v-text-field :rules="rule" label="標題" v-model="input.title"></v-text-field>
                     <v-text-field :rules="rule" label="教學類型" v-model="input.type"></v-text-field>
-                    <VueEditor v-model="input.content"></VueEditor>
+                    <tui-editor :options="options" mode="wysiwyg" v-model="input.content"></tui-editor>
                 </v-form>
             </v-card-text>
             <v-card-actions>
@@ -47,15 +47,21 @@
 </template>
 
 <script>
-    import {VueEditor} from 'vue2-editor'
+    import TuiEditor from "@toast-ui/vue-editor/src/Editor";
 
     export default {
         name: "Tutorials",
         components: {
-            VueEditor
+            TuiEditor,
         },
         data() {
             return {
+                options: {
+                    useDefaultHTMLSanitizer: true,
+                    language: 'en_US',
+                    hideModeSwitch: true,
+                    minHeight: '400px',
+                },
                 valid: false,
                 rule: [v => !!v || '必填'],
                 input: {

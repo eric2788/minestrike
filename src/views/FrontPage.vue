@@ -12,8 +12,7 @@
             </v-toolbar>
             <v-divider></v-divider>
             <v-list dense>
-                <template v-for="(button,index) in buttons">
-                    <v-list-tile :key="index" :to="button.to" @click.native="toTop()" v-if="button.to !== '/tutorials'">
+                <v-list-tile :key="index" :to="button.to" @click.native="toTop()" v-for="(button,index) in buttons">
                         <v-list-tile-action>
                             <v-icon>{{button.icon}}</v-icon>
                         </v-list-tile-action>
@@ -21,28 +20,6 @@
                             <v-list-tile-title>{{button.name}}</v-list-tile-title>
                         </v-list-tile-content>
                     </v-list-tile>
-                    <template v-else>
-                        <v-list-group
-                                :key="index+'gp'"
-                                prepend-icon="contact_support"
-                        >
-
-                            <v-list-tile slot="activator">
-                                <v-list-tile-title>教學幫助</v-list-tile-title>
-                            </v-list-tile>
-
-                            <v-list-tile :key="i" @click="()=> {$store.commit('setTutType',item); nav = false}"
-                                         to="/tutorials" v-for="(item,i) in tutorial_type">
-                                <v-list-tile-action>
-                                </v-list-tile-action>
-                                <v-list-tile-content>
-                                    <v-list-tile-title><span class="black--text">{{item}}</span></v-list-tile-title>
-                                </v-list-tile-content>
-
-                            </v-list-tile>
-                        </v-list-group>
-                    </template>
-                </template>
             </v-list>
         </v-navigation-drawer>
         <v-toolbar class="info darken-4" dark flat>
@@ -50,11 +27,11 @@
                 <v-icon>menu</v-icon>
             </v-toolbar-side-icon>
             <v-toolbar-title class="pr-2">MineStrike</v-toolbar-title>
-            <template v-for="(btn,i) in buttons">
-                <v-btn :key="i" :to="btn.to" flat>{{btn.name}}</v-btn>
+            <template v-if="!isMobile">
+                <v-btn :key="i" :to="btn.to" flat v-for="(btn,i) in buttons">{{btn.name}}</v-btn>
             </template>
             <v-spacer></v-spacer>
-            <v-btn class="error" to="/admin">管理員後台</v-btn>
+            <v-btn class="error" flat to="/admin">管理員後台</v-btn>
         </v-toolbar>
         <v-container grid-list-md>
             <v-fab-transition v-if="!isDestop">

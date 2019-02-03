@@ -4,7 +4,8 @@
             <v-card v-if="!loading">
                 <v-card-title class="headline info darken-2 white--text">{{title}}</v-card-title>
                 <v-divider></v-divider>
-                <v-card-text v-html="content">
+                <v-card-text>
+                    <viewer :value="content"></viewer>
                 </v-card-text>
             </v-card>
             <v-progress-linear height="3" indeterminate v-else></v-progress-linear>
@@ -12,8 +13,14 @@
     </v-content>
 </template>
 <script>
+    import 'tui-editor/dist/tui-editor-contents.css';
+    import 'highlight.js/styles/github.css';
+    import Viewer from '@toast-ui/vue-editor/src/Viewer.vue'
     export default {
         name: 'Home',
+        components: {
+            Viewer
+        },
         data() {
             return {
                 loading: false,

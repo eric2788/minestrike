@@ -6,8 +6,8 @@
                 <v-spacer></v-spacer>
             </v-card-title>
             <v-card-text>
-                <v-text-field label="標題" v-model="title"></v-text-field>
-                <VueEditor v-model="content"></VueEditor>
+                <v-text-field :disabled="loading" label="標題" v-model="title"></v-text-field>
+                <tui-editor :options="options" mode="wysiwyg" v-model="content"></tui-editor>
             </v-card-text>
             <v-card-actions>
                 <v-btn :disabled="loading" :loading="loading" @click="editHome" class="success">儲存</v-btn>
@@ -23,15 +23,24 @@
 </template>
 
 <script>
-    import {VueEditor} from 'vue2-editor'
+    import 'tui-editor/dist/tui-editor.css';
+    import 'tui-editor/dist/tui-editor-contents.css';
+    import 'codemirror/lib/codemirror.css';
+    import TuiEditor from "@toast-ui/vue-editor/src/Editor";
 
     export default {
         name: "Home",
         components: {
-            VueEditor
+            TuiEditor,
         },
         data() {
             return {
+                options: {
+                    useDefaultHTMLSanitizer: true,
+                    language: 'en_US',
+                    hideModeSwitch: true,
+                    minHeight: '400px',
+                },
                 title: '',
                 content: '',
                 id: '',
@@ -43,7 +52,6 @@
                 }
             }
         },
-        computed: {},
         methods: {
             async get_home() {
                 this.loading = true;

@@ -23,7 +23,7 @@
             </v-card-title>
             <v-card-text>
                 <v-text-field label="標題" v-model="title"></v-text-field>
-                <VueEditor v-model="content"></VueEditor>
+                <tui-editor :options="options" mode="wysiwyg" v-model="content"></tui-editor>
             </v-card-text>
             <v-card-actions>
                 <v-btn :disabled="loading" :loading="loading" @click="addnew ? add_sidebars() : edit_sidebars(id)"
@@ -44,15 +44,21 @@
 </template>
 
 <script>
-    import {VueEditor} from 'vue2-editor'
+    import TuiEditor from "@toast-ui/vue-editor/src/Editor";
 
     export default {
         name: "SideBar",
         components: {
-            VueEditor
+            TuiEditor,
         },
         data() {
             return {
+                options: {
+                    useDefaultHTMLSanitizer: true,
+                    language: 'en_US',
+                    hideModeSwitch: true,
+                    minHeight: '400px',
+                },
                 rule: [v => !!v || '必填'],
                 loading: false,
                 addnew: false,
@@ -136,13 +142,17 @@
                 this.loading = true;
                 this.$axios({
                     method: 'post',
-                    url: '/php/sidebars.php',
-                    data: this.sidebars
+                    url: '//127.0.0.1/php/json.php',
+                    data: {
+                        json: 'sidebar',
+                        content: this.sidebars
+                    }
                 }).then(res => {
                     if (res.data.success) {
                         this.operation.success = true;
                         this.get_sidebars();
                     } else {
+                        window.console.log(res.data.error);
                         this.operation.fail = true;
                     }
                 }).catch(err => {

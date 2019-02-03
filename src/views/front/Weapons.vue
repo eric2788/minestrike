@@ -26,7 +26,7 @@
                                      rows-per-page-text="每頁記錄數：">
                         <template slot="item" slot-scope="props">
                             <v-flex xs2>
-                                <v-card :class="{'mt-3': isMobile}">
+                                <v-card :class="{'mt-3': isMobile}" @click="zoomWeapon(props.item)" hover>
                                     <div style="padding: 10px">
 
                                         <v-img :src="props.item.src" aspect-ratio="1" contain max-height="200px"
@@ -50,9 +50,37 @@
                                 </v-card>
                             </v-flex>
                         </template>
+                        <template slot="pageText" slot-scope="props">
+                            正在列出 {{ props.pageStart }} - {{ props.pageStop }} 項, 總項目: {{ props.itemsLength }}
+                        </template>
                     </v-data-iterator>
                 </v-card-text>
             </v-card>
+            <v-dialog max-width="500" v-model="dialog">
+                <v-card class="justify-center">
+                    <v-card-title class="headline info darken-3 white--text">{{dig.name}}</v-card-title>
+                    <v-card-text>
+                        <v-layout :class="isMobile ? 'column' : 'row wrap'">
+                            <v-flex xs5>
+                                <v-img :src="dig.src" contain max-height="200"></v-img>
+                            </v-flex>
+                            <v-flex xs7>
+                                <span class="pr-1 grey--text text--darken-2">槍械:</span> <span class="subheading">{{dig.gun}}</span>
+                                <br>
+                                <span class="pr-1 grey--text text--darken-2">類型:</span> <span class="subheading">{{dig.type}}</span>
+                                <br>
+                                <span class="pr-1 grey--text text--darken-2">獲得方法:</span> <span class="subheading">{{dig.price}}</span>
+                                <br>
+                                <span class="pr-1 grey--text text--darken-2">敘述:</span>
+                                <br>
+                                <span class="body-2">
+                                    {{dig.text}}
+                                </span>
+                            </v-flex>
+                        </v-layout>
+                    </v-card-text>
+                </v-card>
+            </v-dialog>
         </v-container>
     </v-content>
 </template>
@@ -63,6 +91,8 @@
         name: "Weapons",
         data() {
             return {
+                dialog: false,
+                dig: {},
                 loading: false,
                 selected_type: '所有',
                 selected_guns: '所有',
@@ -95,6 +125,10 @@
             }
         },
         methods: {
+            zoomWeapon(item) {
+                this.dig = item;
+                this.dialog = true;
+            },
             filteredItems(items, search) {
                 let result = items;
                 if (this.selected_type !== '所有') result = items.filter(r => r.type === this.selected_type);

@@ -31,6 +31,9 @@
                                 </v-card>
                             </v-flex>
                         </template>
+                        <template slot="pageText" slot-scope="props">
+                            正在列出 {{ props.pageStart }} - {{ props.pageStop }} 項, 總項目: {{ props.itemsLength }}
+                        </template>
                     </v-data-iterator>
                 </v-card-text>
             </v-card>

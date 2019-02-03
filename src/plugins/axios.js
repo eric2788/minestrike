@@ -7,7 +7,7 @@ import axios from "axios";
 // axios.defaults.baseURL = process.env.baseURL || process.env.apiUrl || '';
 axios.defaults.headers.get['Content-Type'] = 'application/json, charset=utf-8';
 let config = {
-    baseURL: "//localhost:9090/",
+  baseURL: "//rest.hypernology.com:9091/",
   timeout: 10 * 1000, // Timeout
   withCredentials: false, // Check cross-site Access-Control
 };

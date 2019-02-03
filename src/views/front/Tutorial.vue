@@ -18,8 +18,13 @@
                                 <v-card-title class="headline info darken-2 white--text">{{props.item.title}}
                                 </v-card-title>
                                 <v-divider></v-divider>
-                                <v-card-text v-html="props.item.content"></v-card-text>
+                                <v-card-text>
+                                    <tui-editor-viewer :value="props.item.content"></tui-editor-viewer>
+                                </v-card-text>
                             </v-card>
+                        </template>
+                        <template slot="pageText" slot-scope="props">
+                            正在列出 {{ props.pageStart }} - {{ props.pageStop }} 項, 總項目: {{ props.itemsLength }}
                         </template>
                     </v-data-iterator>
                 </v-tab-item>
@@ -34,8 +39,10 @@
 </template>
 
 <script>
+    import TuiEditorViewer from "@toast-ui/vue-editor/src/Viewer";
     export default {
         name: "Tutorial",
+        components: {TuiEditorViewer},
         data() {
             return {
                 search: '',

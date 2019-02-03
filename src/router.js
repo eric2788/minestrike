@@ -2,7 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import store from './store'
 import func from './global-func'
-
+import {_axios} from "@/plugins/axios";
 
 Vue.use(Router);
 
@@ -26,7 +26,14 @@ export const router = new Router({
           path: 'announce',
           name: 'Announces',
           components: {
-            main: () => import('./views/front/Announce.vue')
+            main: () => import('./views/front/AnnounceList.vue')
+          }
+        },
+        {
+          path: 'announce/:id',
+          name: 'Announce',
+          components: {
+            main: () => import('./views/front/AnnounceArticle.vue')
           }
         },
         {
@@ -94,7 +101,8 @@ export const router = new Router({
             donate: () => import('./views/panel/Donations.vue'),
             tutorial: () => import('./views/panel/Tutorials.vue'),
             weapon: () => import('./views/panel/Weapons.vue'),
-            sidebar: () => import('./views/panel/Sidebar.vue')
+            sidebar: () => import('./views/panel/Sidebar.vue'),
+            socialfooter: () => import('./views/panel/SocialFooter.vue')
           }
         }
       ]
@@ -103,11 +111,26 @@ export const router = new Router({
       path: '/login',
       name: 'Login',
       beforeEnter: (to, from, next) => {
-        if (store.state.admin && store.state.session) {
-          next('/admin')
-        } else {
-          next();
-        }
+        store.dispatch('loadSession').then(() => {
+          if (!store.state.session) {
+            next();
+            return;
+          }
+          _axios({
+            method: 'post',
+            url: 'auth/check?valid=' + store.state.session
+          }).then(res => {
+            if (res.data.success) {
+              window.console.log("發現有效的 SessionId, 已成功自動登入。");
+              store.commit('setLogin', true);
+              next('/admin');
+            } else {
+              store.dispatch('logout').then();
+              window.console.log("無效的 SessionId, 繼續留待登入界面。");
+              next();
+            }
+          }).catch(err => window.console.log(err))
+        });
       },
       component: () => import('./views/Login.vue')
     },

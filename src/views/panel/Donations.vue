@@ -23,7 +23,7 @@
             </v-card-title>
             <v-card-text>
                 <v-text-field label="標題" v-model="title"></v-text-field>
-                <VueEditor v-model="content"></VueEditor>
+                <tui-editor :options="options" mode="wysiwyg" v-model="content"></tui-editor>
             </v-card-text>
             <v-card-actions>
                 <v-btn :disabled="loading" :loading="loading" @click="cards_addnew ? addCards() : editCards(id)"
@@ -65,7 +65,7 @@
                         </v-flex>
                         <v-flex xs8>
                             <v-text-field :disabled="!vipers_addnew" :rules="rule" @click:append="headSkin(uuid)"
-                                          append-icon="image_search"
+                                          append-icon="image_search" suffix="搜索皮膚: "
                                           counter="36" label="UUID" v-model="uuid"></v-text-field>
                             <v-text-field :rules="rule" label="用戶名" v-model="username"></v-text-field>
                             <v-text-field :rules="rule" label="顏色" v-model="color"></v-text-field>
@@ -93,15 +93,21 @@
 </template>
 
 <script>
-    import {VueEditor} from 'vue2-editor'
+    import TuiEditor from "@toast-ui/vue-editor/src/Editor";
 
     export default {
         name: "Donations",
         components: {
-            VueEditor
+            TuiEditor,
         },
         data() {
             return {
+                options: {
+                    useDefaultHTMLSanitizer: true,
+                    language: 'en_US',
+                    hideModeSwitch: true,
+                    minHeight: '400px',
+                },
                 rule: [v => !!v || '必填'],
                 src: '',
                 loading: false,
@@ -287,13 +293,17 @@
                 this.loading = true;
                 this.$axios({
                     method: 'post',
-                    url: '/php/cards.php',
-                    data: this.cards
+                    url: '//127.0.0.1/php/json.php',
+                    data: {
+                        json: 'donation',
+                        content: this.cards
+                    }
                 }).then(res => {
                     if (res.data.success) {
                         this.operation.success = true;
                         this.getCards();
                     } else {
+                        window.console.log(res.data.error);
                         this.operation.fail = true;
                     }
                 }).catch(err => {

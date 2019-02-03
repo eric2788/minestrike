@@ -23,7 +23,7 @@
             </v-card-title>
             <v-card-text>
                 <v-text-field :rules="[v=>!!v || '必填']" label="標題" v-model="title"></v-text-field>
-                <VueEditor v-model="content"></VueEditor>
+                <tui-editor :options="options" mode="wysiwyg" v-model="content"></tui-editor>
             </v-card-text>
             <v-card-actions>
                 <v-btn :disabled="loading || !title" :loading="loading"
@@ -45,15 +45,21 @@
 </template>
 
 <script>
-    import {VueEditor} from 'vue2-editor'
+    import TuiEditor from "@toast-ui/vue-editor/src/Editor";
 
     export default {
         name: "Announce",
         components: {
-            VueEditor
+            TuiEditor,
         },
         data() {
             return {
+                options: {
+                    useDefaultHTMLSanitizer: true,
+                    language: 'en_US',
+                    hideModeSwitch: true,
+                    minHeight: '400px',
+                },
                 title: '',
                 content: '',
                 id: '',

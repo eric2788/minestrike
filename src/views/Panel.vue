@@ -26,7 +26,7 @@
             <v-toolbar-side-icon @click="nav = !nav" v-if="isMobile"></v-toolbar-side-icon>
             <v-toolbar-title>MineStrike - 後台系統</v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn @click="logout" class="warning">登出</v-btn>
+            <v-btn @click="logout" class="warning" flat>登出</v-btn>
         </v-toolbar>
         <v-content>
             <v-container>
@@ -78,6 +78,11 @@
                         name: '右側欄',
                         route: 'sidebar',
                         icon: 'format_align_justify'
+                    },
+                    {
+                        name: '網頁底部',
+                        route: 'socialfooter',
+                        icon: 'power_input'
                     }
                 ]
             }

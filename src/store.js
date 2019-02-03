@@ -40,7 +40,7 @@ export default new Vuex.Store({
       commit('setLogin', true);
       commit('setSession', obj.uuid);
       if (obj.remember) fc.setCookie("minestrike_session", obj.uuid, 7);
-      router.replace('/admin')
+      router.push('/admin')
     },
     loadSession({state, commit}) {
       if (state.session) return;
@@ -53,7 +53,7 @@ export default new Vuex.Store({
       commit('setLogin', false);
       commit('setSession', '');
       fc.delCookie("minestrike_session");
-      router.replace('/');
+      router.push('/');
     }
   }
 })

@@ -16,7 +16,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn :disabled="loading || !valid" :loading="loading" @click="Login" class="success">登入</v-btn>
-                    <v-checkbox label="記住我" v-model="remember"></v-checkbox>
+                    <v-checkbox class="ml-3" label="記住我 7 天" v-model="remember"></v-checkbox>
                 </v-card-actions>
             </v-card>
         </v-container>
@@ -81,19 +81,7 @@
             }
         },
         created() {
-            this.$store.dispatch('loadSession').then(() => {
-                if (!this.session) return;
-                this.$axios({
-                    method: 'post',
-                    url: 'auth/check?valid=' + this.session
-                }).then(res => {
-                    if (res.data.success) {
-                        this.setLogin(true);
-                        this.$router.push('/admin')
-                    }
-                }).catch(() => {
-                });
-            });
+
 
         }
     }
