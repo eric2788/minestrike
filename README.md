@@ -3,7 +3,7 @@ leaderboards with pvptitiles
 [WebAPIPlugin](https://github.com/eric2788/PvPTitlesWebAPI)
 
 ### 演示
-![demo](https://cdn.discordapp.com/attachments/509943641679331328/533719101466607616/f77250387276fe42feeb60dd8543ff2e.png)
+![demo](https://gyazo.com/c84ba01ee803c5cf0e460562a7ada967.png)
 
 ### 切換頭像模式
 ![switch_icon](https://i.gyazo.com/563617016a859ee356dc87da3c0e1cec.gif)
